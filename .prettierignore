@@ -1,0 +1,8 @@
+node_modules
+.next
+.turbo
+out
+build
+pnpm-lock.yaml
+public
+seed
