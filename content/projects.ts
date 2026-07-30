@@ -65,19 +65,6 @@ export const projects: Project[] = [
     architecture: "Five Python/Flask services share Postgres, RabbitMQ, and Redis, with a Next.js + TypeScript frontend. Core handles auth (Auth0) and request routing; Data Ingestion runs the upload-to-clean pipeline; AV scans incoming files; RAG handles retrieval and generation; User Management owns workspaces and permissions.\n\nIngestion: files land via S3 multipart upload, get scanned by ClamAV in a quarantine bucket, and on a clean verdict are promoted to the working bucket — only then does the extraction graph kick off. RabbitMQ + Celery split the work into checkpointed stages (extract → chunk → embed → index), so a transient failure in embedding doesn't replay extraction. Each stage writes to a stable artifact path, and a state machine in Postgres tracks per-document progress.\n\nRetrieval: queries hit a hybrid scorer — pgvector for semantic, Postgres tsvector for lexical — fused with Reciprocal Rank Fusion and reranked with Cohere. A query-transformation step generates rephrasings to broaden recall on complex questions; an intent classifier upstream of retrieval routes between four paths: standard RAG, summarize, analysis, and external-LLM passthrough.\n\nTopic generation runs K-Means over chunk embeddings to surface auto-topics with citation tracking back to source spans; a hierarchical summarization step rolls cluster summaries up into document-level summaries, so the topic UI exposes both granular and digest views.\n\nIngestion progress streams to the frontend via SSE, with Redis as the pub/sub bus between Celery workers and the SSE endpoint. Prometheus + Grafana cover every service, with per-stage latency and queue-depth dashboards.\n\nThe team design system was built in parallel as Stencil.js Web Components — framework-agnostic so the same primitives worked in Adapt's Next.js app and a separate internal admin tool — published to AWS CodeArtifact.",
     // story: TODO
   },
-  // {
-  //   slug: "contingio",
-  //   name: "Contingio — graph-powered chatbot",
-  //   category: "ai-ml",
-  //   status: "shipped",
-  //   featured: true,
-  //   summary:
-  //     "A chatbot that extracts structured information from natural language and stores it in Neo4j, enabling relationship-aware Graph RAG.",
-  //   description:
-  //     "A conversational chatbot that extracts structured information from free-form natural language and persists it as a graph in Neo4j. Each turn parses out entities and relationships, which become nodes and edges in the knowledge graph; subsequent retrieval traverses those relationships to answer connected queries. The Graph RAG layer means follow-up questions don't have to rephrase context — relationships between previously-extracted entities are walkable. The motivation: traditional embedding-based RAG flattens relationships into similarity scores, which loses cardinality and direction. A graph store keeps that structure intact and queryable.",
-  //   techStack: ["Neo4j", "Graph RAG", "LLMs", "Python"],
-  //   date: "2024",
-  // },
   {
     slug: "recruitease",
     name: "RecruitEase — AI recruitment platform",
@@ -106,19 +93,6 @@ export const projects: Project[] = [
     demo: "https://chromewebstore.google.com/detail/eeo-autofill/cbajiekpgkhmnhipbkgfihpikakebjmp",
     date: "Spring 2026",
   },
-  // {
-  //   slug: "springhealth",
-  //   name: "SpringHealth — mental health assistant",
-  //   category: "ai-ml",
-  //   status: "shipped",
-  //   featured: false,
-  //   summary:
-  //     "A mental-health chatbot with persistent conversation memory for contextual, empathetic follow-ups.",
-  //   description:
-  //     "A mental-health chatbot built around persistent conversation memory. The interesting problem here was context retention across long, multi-turn sessions — the model needs to remember earlier emotional context (a user mentioning a relationship issue 30 turns ago) without ballooning prompt size on every turn. The memory layer summarizes earlier turns into a compact context vector that gets re-injected at each new turn, so follow-up responses stay grounded in the running thread instead of treating each message as standalone.",
-  //   techStack: ["LLMs", "Memory Management", "Python"],
-  //   date: "2024",
-  // },
   {
     slug: "hackathon-ai-talent-pool",
     name: "Hackathon: AI talent pool",
