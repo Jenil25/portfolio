@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   },
   description:
     "AI-systems engineer · MS CS at Northeastern. Shipping production LLM systems and agentic workflows.",
-  metadataBase: new URL("https://jenil.dev"),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({

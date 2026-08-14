@@ -15,12 +15,8 @@ export default function HomePage() {
             Jenil Mahyavanshi
           </h1>
           <p className="text-muted-foreground text-[22px] leading-[1.4]">
-            {/* AI-systems engineer · currently shipping */}
             Software Engineer · currently building
           </p>
-          {/* <Suspense fallback={null}>
-            <HomeRoles />
-          </Suspense> */}
         </div>
         <div className="md:justify-self-end">
           <AgentSandbox />
@@ -41,12 +37,6 @@ export default function HomePage() {
           {featured.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
-        </div>
-      </section>
-
-      <section className="py-8">
-        <div className="text-muted-foreground border-y border-border py-3 font-mono text-[13px]">
-          last commit: 2h ago · currently building: portfolio v1 · models tested this week: 4
         </div>
       </section>
 

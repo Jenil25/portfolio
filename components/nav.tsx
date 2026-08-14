@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const links = [
   { href: "/projects", label: "Projects" },
+  { href: "/experience", label: "Experience" },
   { href: "/failures", label: "Failures" },
   { href: "/about", label: "About" },
 ];
@@ -15,14 +16,14 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-md">
+    <header className="border-border bg-background/70 sticky top-0 z-50 border-b backdrop-blur-md">
       <nav
         aria-label="Primary"
         className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6"
       >
         <Link
           href="/"
-          className="hover:text-accent-teal font-mono text-sm tracking-tight text-foreground transition-colors"
+          className="hover:text-accent-teal text-foreground font-mono text-sm tracking-tight transition-colors"
         >
           jenil
         </Link>
@@ -39,9 +40,7 @@ export function Nav() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "rounded-md px-3 py-1.5 text-sm transition-colors",
-                    active
-                      ? "text-accent-teal"
-                      : "text-muted-foreground hover:text-foreground",
+                    active ? "text-accent-teal" : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {link.label}

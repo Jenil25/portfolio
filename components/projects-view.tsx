@@ -16,7 +16,6 @@ const FILTERS: { id: Filter; label: string }[] = [
   { id: "ai-ml", label: "AI / ML" },
   { id: "backend", label: "Backend" },
   { id: "tools", label: "Tools" },
-  { id: "web", label: "Web" },
 ];
 
 interface ProjectsViewProps {
@@ -25,7 +24,9 @@ interface ProjectsViewProps {
 
 export function ProjectsView({ projects }: ProjectsViewProps) {
   const [filter, setFilter] = React.useState<Filter>("all");
-  const [view, setView] = React.useState<View>("graph");
+  // List is the default: it answers "what has he built" in one scan. The graph is the
+  // richer view but needs exploring, so it's opt-in rather than the landing state.
+  const [view, setView] = React.useState<View>("list");
   const [selectedSlug, setSelectedSlug] = React.useState<string | null>(null);
 
   const filtered = React.useMemo(
@@ -33,9 +34,10 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
     [filter, projects],
   );
 
-  const graphData = React.useMemo(() => buildGraphData(filtered), [filtered]);
-  const selectedProject =
-    selectedSlug ? (filtered.find((p) => p.slug === selectedSlug) ?? null) : null;
+  const graphData = React.useMemo(() => buildGraphData(filtered, projects), [filtered, projects]);
+  const selectedProject = selectedSlug
+    ? (filtered.find((p) => p.slug === selectedSlug) ?? null)
+    : null;
 
   React.useEffect(() => {
     if (selectedSlug && !filtered.some((p) => p.slug === selectedSlug)) {
@@ -71,9 +73,9 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
         <div
           role="tablist"
           aria-label="View mode"
-          className="flex items-center gap-0 self-start rounded-md border border-border p-0.5"
+          className="border-border flex items-center gap-0 self-start rounded-md border p-0.5"
         >
-          {(["graph", "list"] as View[]).map((mode) => {
+          {(["list", "graph"] as View[]).map((mode) => {
             const active = view === mode;
             return (
               <button

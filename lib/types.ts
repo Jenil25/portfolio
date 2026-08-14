@@ -1,5 +1,52 @@
 export type ProjectStatus = "shipped" | "in-progress" | "archived";
-export type ProjectCategory = "ai-ml" | "backend" | "tools" | "web";
+export type ProjectCategory = "ai-ml" | "backend" | "tools";
+
+/**
+ * Closed vocabulary for `Project.techStack`. `buildGraphData` dedupes tech nodes
+ * by exact string match, so a spelling variant ("NextJS" vs "Next.js") would
+ * silently fork one node into two. Adding a project with new tech means adding
+ * it here first — that friction is the point.
+ */
+export type TechName =
+  | "AWS S3"
+  | "Auth0"
+  | "Celery"
+  | "Chrome Extensions API"
+  | "Cohere"
+  | "Docker"
+  | "Firebase"
+  | "Flask"
+  | "Flutter"
+  | "GPT-3.5"
+  | "Google Gemini API"
+  | "Grafana"
+  | "JinaAI"
+  | "K-Means"
+  | "LLM APIs"
+  | "LLMs"
+  | "LaTeX"
+  | "LangChain"
+  | "Manifest V3"
+  | "MySQL"
+  | "Next.js"
+  | "Node.js"
+  | "PHP"
+  | "PostgreSQL"
+  | "Prometheus"
+  | "Prototyping"
+  | "Python"
+  | "REST API"
+  | "RabbitMQ"
+  | "React"
+  | "Redis"
+  | "SQL"
+  | "Semantic Matching"
+  | "Semantic Search"
+  | "Stencil.js"
+  | "Team Leadership"
+  | "TypeScript"
+  | "n8n"
+  | "pgvector";
 
 export interface ProjectMetric {
   label: string;
@@ -13,7 +60,7 @@ export interface Project {
   status: ProjectStatus;
   summary: string;
   description: string;
-  techStack: string[];
+  techStack: TechName[];
   metrics?: ProjectMetric[];
   architecture?: string;
   story?: string;

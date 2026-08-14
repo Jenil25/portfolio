@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Download, Mail, MapPin } from "lucide-react";
-import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/brand-icons";
+import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
 import { CareerTimeline } from "@/components/career-timeline";
 import { TechPill } from "@/components/tech-pill";
 import { about } from "@/content/about";
 import { skills } from "@/content/skills";
+import { RESUME_FILENAME, RESUME_PATH } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -47,13 +48,14 @@ export default function AboutPage() {
           <ContactRow />
 
           <div>
-            <Link
-              href="#"
+            <a
+              href={RESUME_PATH}
+              download={RESUME_FILENAME}
               className="text-primary-foreground bg-accent-teal hover:bg-accent-teal/90 inline-flex items-center gap-2 rounded-md px-4 py-2 text-[14px] transition-colors"
             >
               <Download className="size-4" aria-hidden />
               Download resume
-            </Link>
+            </a>
           </div>
         </section>
 
@@ -61,6 +63,21 @@ export default function AboutPage() {
           <section className="flex flex-col gap-6">
             <h2 className="text-h3 text-foreground">Career changelog</h2>
             <CareerTimeline />
+          </section>
+
+          <section className="flex flex-col gap-4">
+            <h2 className="text-h3 text-foreground">Education</h2>
+            <ul className="flex flex-col gap-4">
+              {about.education.map((entry) => (
+                <li key={entry.institution} className="flex flex-col gap-0.5">
+                  <span className="text-foreground text-[15px]">{entry.institution}</span>
+                  <span className="text-muted-foreground text-[14px]">{entry.degree}</span>
+                  <span className="text-muted-foreground font-mono text-[12px]">
+                    {entry.gradDate} · GPA {entry.gpa}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </section>
 
           <section className="flex flex-col gap-4">
@@ -96,7 +113,6 @@ function ContactRow() {
     },
     { label: "GitHub", href: about.contact.github, Icon: GitHubIcon, external: true },
     { label: "LinkedIn", href: about.contact.linkedin, Icon: LinkedInIcon, external: true },
-    { label: "X", href: "https://x.com/", Icon: XIcon, external: true },
   ];
 
   return (
@@ -112,7 +128,7 @@ function ContactRow() {
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="text-foreground hover:border-accent-teal/50 hover:text-accent-teal inline-flex items-center gap-2 rounded-md border border-border px-2.5 py-1.5 text-[13px] transition-colors"
+              className="text-foreground hover:border-accent-teal/50 hover:text-accent-teal border-border inline-flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-[13px] transition-colors"
             >
               <Icon className="size-3.5" aria-hidden />
               {label}

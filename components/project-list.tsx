@@ -7,7 +7,6 @@ const CATEGORY_LABEL: Record<Project["category"], string> = {
   "ai-ml": "AI / ML",
   backend: "Backend",
   tools: "Tools",
-  web: "Web",
 };
 
 interface ProjectListProps {
@@ -17,15 +16,15 @@ interface ProjectListProps {
 export function ProjectList({ projects }: ProjectListProps) {
   if (projects.length === 0) {
     return (
-      <div className="bg-surface text-muted-foreground rounded-xl border border-border px-6 py-12 text-center text-[14px]">
+      <div className="bg-surface text-muted-foreground border-border rounded-xl border px-6 py-12 text-center text-[14px]">
         No projects match this filter.
       </div>
     );
   }
 
   return (
-    <div className="bg-surface overflow-hidden rounded-xl border border-border">
-      <ul className="divide-y divide-border">
+    <div className="bg-surface border-border overflow-hidden rounded-xl border">
+      <ul className="divide-border divide-y">
         {projects.map((project) => (
           <li key={project.slug}>
             <Link
