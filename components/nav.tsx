@@ -17,17 +17,19 @@ export function Nav() {
 
   return (
     <header className="border-border bg-background/70 sticky top-0 z-50 border-b backdrop-blur-md">
+      {/* Below sm the links wrap to a second row: logo + links + toggle need ~430px, wider
+          than most phones. */}
       <nav
         aria-label="Primary"
-        className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6"
+        className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-2 gap-y-1 px-6 py-2 sm:h-14 sm:py-0"
       >
         <Link
           href="/"
-          className="hover:text-accent-teal text-foreground font-mono text-sm tracking-tight transition-colors"
+          className="hover:text-accent-teal text-foreground mr-auto font-mono text-sm tracking-tight transition-colors"
         >
           jenil
         </Link>
-        <ul className="flex items-center gap-1">
+        <ul className="order-last -ml-3 flex w-full items-center gap-1 sm:order-none sm:ml-0 sm:w-auto">
           {links.map((link) => {
             const active =
               link.href === "/"
@@ -48,10 +50,8 @@ export function Nav() {
               </li>
             );
           })}
-          <li className="ml-2">
-            <ThemeToggle />
-          </li>
         </ul>
+        <ThemeToggle />
       </nav>
     </header>
   );

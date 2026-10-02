@@ -4,7 +4,7 @@ import { projects } from "@/content/projects";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "A knowledge graph of projects and the tech behind them.",
+  description: "What I've built and the tech behind it.",
 };
 
 export default function ProjectsPage() {
@@ -13,8 +13,8 @@ export default function ProjectsPage() {
       <header className="mb-8 flex flex-col gap-2">
         <h1 className="text-h2 text-foreground">Projects</h1>
         <p className="text-muted-foreground text-[15px]">
-          A knowledge graph of what I&apos;ve built and the tech behind it. Click a project to
-          preview; open a project for the full story.
+          What I&apos;ve built and the tech behind it. Switch to the graph to see which tools recur
+          across projects.
         </p>
       </header>
       <ProjectsView projects={projects} />

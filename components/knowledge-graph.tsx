@@ -6,7 +6,7 @@ import type { GraphData } from "@/lib/graph";
 const KnowledgeGraphInner = dynamic(() => import("@/components/knowledge-graph-inner"), {
   ssr: false,
   loading: () => (
-    <div className="bg-surface flex h-[640px] w-full items-center justify-center rounded-xl border border-border">
+    <div className="bg-surface border-border flex h-[480px] w-full items-center justify-center rounded-xl border md:h-[640px]">
       <span className="text-muted-foreground font-mono text-[12px]">Loading...</span>
     </div>
   ),

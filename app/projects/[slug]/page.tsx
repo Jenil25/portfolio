@@ -34,13 +34,46 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
   const related = getRelatedProjects(project.slug, 5);
 
+  const overview = (
+    <>
+      {project.metrics && project.metrics.length > 0 && (
+        <div className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-3">
+          {project.metrics.map((metric) => (
+            <div
+              key={metric.label}
+              className="bg-surface border-border flex flex-col gap-1 rounded-lg border p-4"
+            >
+              <span className="text-muted-foreground font-mono text-[12px]">{metric.label}</span>
+              <span className="text-foreground text-[20px] font-medium">{metric.value}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="text-foreground text-[16px] leading-[1.7]">{project.description}</p>
+    </>
+  );
+
+  // A tab exists only once its field is written; "forthcoming" placeholders read as unfinished.
+  const tabs = [
+    { value: "overview", label: "Overview", content: overview },
+    ...(project.architecture
+      ? [
+          {
+            value: "architecture",
+            label: "Architecture",
+            content: <Markdown>{project.architecture}</Markdown>,
+          },
+        ]
+      : []),
+    ...(project.story
+      ? [{ value: "story", label: "Story", content: <Markdown>{project.story}</Markdown> }]
+      : []),
+  ];
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-10 flex flex-col gap-2">
-        <Link
-          href="/projects"
-          className="text-muted-foreground hover:text-accent-teal text-[13px]"
-        >
+        <Link href="/projects" className="text-muted-foreground hover:text-accent-teal text-[13px]">
           ← All projects
         </Link>
       </div>
@@ -65,7 +98,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground hover:border-accent-teal/50 inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5 text-[13px] transition-colors"
+              className="text-foreground hover:border-accent-teal/50 border-border inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-[13px] transition-colors"
             >
               <GitHubIcon className="size-3.5" />
               GitHub
@@ -86,65 +119,28 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       </header>
 
       <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-[1fr_280px]">
-        <Tabs defaultValue="overview" className="min-w-0">
-          <TabsList variant="line" className="w-full justify-start gap-4 border-b border-border">
-            <TabsTrigger
-              value="overview"
-              className="data-active:after:bg-accent-teal data-active:text-foreground"
-            >
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="architecture"
-              className="data-active:after:bg-accent-teal data-active:text-foreground"
-            >
-              Architecture
-            </TabsTrigger>
-            <TabsTrigger
-              value="story"
-              className="data-active:after:bg-accent-teal data-active:text-foreground"
-            >
-              Story
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="pt-8">
-            {project.metrics && project.metrics.length > 0 && (
-              <div className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-3">
-                {project.metrics.map((metric) => (
-                  <div
-                    key={metric.label}
-                    className="bg-surface flex flex-col gap-1 rounded-lg border border-border p-4"
-                  >
-                    <span className="text-muted-foreground font-mono text-[12px]">
-                      {metric.label}
-                    </span>
-                    <span className="text-foreground text-[20px] font-medium">
-                      {metric.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-            <p className="text-foreground text-[16px] leading-[1.7]">{project.description}</p>
-          </TabsContent>
-
-          <TabsContent value="architecture" className="pt-8">
-            {project.architecture ? (
-              <Markdown>{project.architecture}</Markdown>
-            ) : (
-              <Placeholder label="Architecture writeup is forthcoming." />
-            )}
-          </TabsContent>
-
-          <TabsContent value="story" className="pt-8">
-            {project.story ? (
-              <Markdown>{project.story}</Markdown>
-            ) : (
-              <Placeholder label="Story is forthcoming." />
-            )}
-          </TabsContent>
-        </Tabs>
+        {tabs.length === 1 ? (
+          <div className="min-w-0">{overview}</div>
+        ) : (
+          <Tabs defaultValue="overview" className="min-w-0">
+            <TabsList variant="line" className="border-border w-full justify-start gap-4 border-b">
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className="data-active:after:bg-accent-teal data-active:text-foreground flex-none"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {tabs.map((tab) => (
+              <TabsContent key={tab.value} value={tab.value} className="pt-8">
+                {tab.content}
+              </TabsContent>
+            ))}
+          </Tabs>
+        )}
 
         <aside className="hidden md:block">
           <div className="sticky top-20 flex flex-col gap-6">
@@ -170,14 +166,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           </div>
         </aside>
       </div>
-    </div>
-  );
-}
-
-function Placeholder({ label }: { label: string }) {
-  return (
-    <div className="bg-surface text-muted-foreground rounded-xl border border-dashed border-border px-6 py-12 text-center text-[14px]">
-      {label}
     </div>
   );
 }

@@ -39,7 +39,7 @@ export function AgentSandbox() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[460px] aspect-square"
+      className="relative mx-auto aspect-square w-full max-w-[460px]"
       aria-label="Agent sandbox: a center jenil node connected to five satellite agent nodes for Full Stack, LLM, Data, DevOps, and Automation."
       role="img"
     >
@@ -61,20 +61,16 @@ export function AgentSandbox() {
               stroke="var(--accent-teal)"
               strokeWidth={1}
               initial={{ opacity: 0.35 }}
-              animate={
-                reduced
-                  ? { opacity: 0.5 }
-                  : { opacity: [0.3, 0.6, 0.3] }
-              }
+              animate={reduced ? { opacity: 0.5 } : { opacity: [0.3, 0.6, 0.3] }}
               transition={
                 reduced
                   ? undefined
                   : {
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.4,
-                  }
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.4,
+                    }
               }
             />
           );
@@ -117,26 +113,22 @@ export function AgentSandbox() {
             }}
           >
             <motion.div
-              className="bg-surface flex h-full w-full items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[12px] text-foreground"
+              className="bg-surface border-border text-foreground flex h-full w-full items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-[12px]"
               initial={{ y: 0 }}
               animate={reduced ? { y: 0 } : { y: [-3, 3, -3] }}
               transition={
                 reduced
                   ? undefined
                   : {
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.4,
-                  }
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.4,
+                    }
               }
             >
-              <Icon
-                className="text-muted-foreground"
-                size={16}
-                strokeWidth={1.5}
-              />
-              <span className="whitespace-nowrap font-medium">{node.label}</span>
+              <Icon className="text-muted-foreground" size={16} strokeWidth={1.5} />
+              <span className="font-medium whitespace-nowrap">{node.label}</span>
             </motion.div>
           </div>
         );

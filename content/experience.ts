@@ -2,6 +2,36 @@ import type { Experience } from "@/lib/types";
 
 export const experience: Experience[] = [
   {
+    // TODO(jenil): confirm official title, and that Clear Lakes is OK with these metrics being public.
+    role: "Software Engineer Co-op",
+    company: "Clear Lakes Dental",
+    dates: "Jun 2026 - Present",
+    projectName: "Voice AI agent (patient phone line)",
+    summary:
+      "Inherited a live voice AI agent — the first thing patients hear when they call a clinic — and own its scaling, reliability, latency, and compliance. It runs 24/7 across three clinics at ~1,000 calls a week, handling scheduling, cancellations, insurance verification, outbound confirmation calls, and live transfer to staff during office hours.",
+    techStack: [
+      "VAPI",
+      "Nuxt 3",
+      "Supabase",
+      "TypeScript",
+      "AWS Fargate",
+      "AWS Amplify",
+      "Claude Sonnet 4.6",
+      "Claude Haiku 4.5",
+      "Weave",
+    ],
+    bullets: [
+      "AI resolution rate went from ~16–17% when I joined to ~30%, against a ~29% healthcare industry average (Deloitte Digital, 2026); the agent now recovers ~16.5 staff hours a week.",
+      "Cut per-turn latency by ~1s on average and up to ~2.5s worst case through provider and assistant configuration plus server-side call handling. Past ~1.2s p50, callers start talking over the agent.",
+      "Extracted the voice bot from the main AWS Amplify app onto its own AWS Fargate service with a dedicated CI/CD pipeline, turning a ~1-day coupled deploy wait into independent, on-demand deploys. Owned hosting, deploys, and configuration end to end.",
+      "Wrote a deterministic (not model-based) PHI redaction script for call logs so they can be analyzed with non-BAA AI tooling, plus a BAA-scoped analysis endpoint that evaluates raw logs and suggests fixes, with its response redacted twice before it reaches any non-BAA assistant.",
+      "Benchmarked models for the assistant and settled on Claude Sonnet 4.6 for complex flows and Haiku 4.5 for lighter ones. GPT models reasoned well but followed strict instructions less reliably.",
+      "Built Supabase cron automations: insurance verification three days before every booked appointment, and a monthly MNITS re-verification spread across five days so it never throttles the server or delays staff's manual verification requests.",
+      "Extended the automated eval that reads call logs and files issues in Linear, and set up email alerts on bot failures.",
+      "In progress: decomposing the prompt and moving most logic server-side to reduce hallucination, and tuning voice and persona to cut the drop-off when callers realize they're talking to an AI.",
+    ],
+  },
+  {
     role: "Software Engineer",
     company: "Jeavio India Pvt. Ltd.",
     dates: "Jun 2024 - Jul 2025",
@@ -15,7 +45,7 @@ export const experience: Experience[] = [
       "RabbitMQ",
       "AWS S3",
       "Docker",
-      "NextJS",
+      "Next.js",
       "TypeScript",
       "Node.js",
       "Auth0",
@@ -33,7 +63,7 @@ export const experience: Experience[] = [
       "AWS CodeArtifact",
     ],
     bullets: [
-      "Architected a microservices ecosystem (Core, Data Ingestion, AV, RAG, User Management) using Python, Flask, and NextJS with TypeScript.",
+      "Architected a microservices ecosystem (Core, Data Ingestion, AV, RAG, User Management) using Python, Flask, and Next.js with TypeScript.",
       "Implemented a secure S3 multipart upload pipeline with ClamAV antivirus scanning, quarantine-to-clean bucket promotion flow.",
       "Designed an asynchronous task queue using RabbitMQ and Celery with dedicated workers for ingestion and extraction workloads.",
       "Developed a retry-able ingestion pipeline that checkpoints failed stages (extraction, chunking, embedding) to prevent data loss and enable targeted reprocessing.",

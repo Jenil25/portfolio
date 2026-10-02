@@ -34,10 +34,10 @@ export function ProjectSidePanel({ project, onClose, onSelect }: ProjectSidePane
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 24, opacity: 0 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="bg-surface absolute top-3 right-3 bottom-3 z-20 flex w-[min(360px,calc(100%-1.5rem))] flex-col overflow-hidden rounded-xl border border-border shadow-[0_0_0_1px_rgba(0,0,0,0.04)]"
+          className="bg-surface border-border absolute top-3 right-3 bottom-3 z-20 flex w-[min(360px,calc(100%-1.5rem))] flex-col overflow-hidden rounded-xl border shadow-[0_0_0_1px_rgba(0,0,0,0.04)]"
           aria-label={`${project.name} preview`}
         >
-          <header className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
+          <header className="border-border flex items-start justify-between gap-3 border-b px-5 py-4">
             <div className="flex flex-col gap-1.5">
               <h3 className="text-foreground text-[18px] leading-tight font-medium">
                 {project.name}
@@ -48,7 +48,7 @@ export function ProjectSidePanel({ project, onClose, onSelect }: ProjectSidePane
               type="button"
               onClick={onClose}
               aria-label="Close panel"
-              className="text-muted-foreground hover:border-accent-teal/50 hover:text-foreground inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-border transition-colors"
+              className="text-muted-foreground hover:border-accent-teal/50 hover:text-foreground border-border inline-flex size-7 shrink-0 items-center justify-center rounded-md border transition-colors"
             >
               <X className="size-3.5" aria-hidden />
             </button>
@@ -63,7 +63,7 @@ export function ProjectSidePanel({ project, onClose, onSelect }: ProjectSidePane
             </div>
             <Link
               href={`/projects/${project.slug}`}
-              className="text-accent-teal hover:bg-accent-teal/10 inline-flex w-fit items-center rounded-md border border-accent-teal/40 px-3 py-1.5 text-[13px] transition-colors"
+              className="text-accent-teal hover:bg-accent-teal/10 border-accent-teal/40 inline-flex w-fit items-center rounded-md border px-3 py-1.5 text-[13px] transition-colors"
             >
               View detail →
             </Link>
@@ -75,17 +75,11 @@ export function ProjectSidePanel({ project, onClose, onSelect }: ProjectSidePane
   );
 }
 
-function RelatedProjects({
-  slug,
-  onSelect,
-}: {
-  slug: string;
-  onSelect: (slug: string) => void;
-}) {
+function RelatedProjects({ slug, onSelect }: { slug: string; onSelect: (slug: string) => void }) {
   const related = getRelatedProjects(slug, 4);
   if (related.length === 0) return null;
   return (
-    <div className="flex flex-col gap-2 border-t border-border pt-4">
+    <div className="border-border flex flex-col gap-2 border-t pt-4">
       <h4 className="text-muted-foreground font-mono text-[11px] tracking-wide">
         Related projects
       </h4>

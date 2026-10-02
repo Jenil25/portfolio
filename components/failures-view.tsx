@@ -52,7 +52,7 @@ export function FailuresView({ failures }: FailuresViewProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="bg-surface text-muted-foreground rounded-xl border border-border px-6 py-12 text-center text-[14px]">
+        <div className="bg-surface text-muted-foreground border-border rounded-xl border px-6 py-12 text-center text-[14px]">
           No failures match this filter.
         </div>
       ) : (

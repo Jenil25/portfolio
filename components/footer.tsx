@@ -22,7 +22,7 @@ export function Footer() {
             href={sourceHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-accent-teal underline-offset-4 hover:underline"
+            className="hover:text-accent-teal underline underline-offset-4"
           >
             View source →
           </Link>

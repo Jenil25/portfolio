@@ -12,7 +12,7 @@ export const failures: Failure[] = [
       "Apostrophes in job titles broke the n8n workflow API. Strings were interpolated directly into SQL.",
     postMortem: {
       whatHappened:
-        "Job postings with apostrophes in their titles (e.g. \"Engineer's role\", \"O'Reilly Media\") triggered SQL syntax errors mid-workflow, halting downstream resume generation. The first noticed failure was silent — the workflow logged the error but the dashboard kept showing the job as \"queued\".",
+        'Job postings with apostrophes in their titles (e.g. "Engineer\'s role", "O\'Reilly Media") triggered SQL syntax errors mid-workflow, halting downstream resume generation. The first noticed failure was silent — the workflow logged the error but the dashboard kept showing the job as "queued".',
       rootCause:
         "A custom code node was assembling the insert statement with string concatenation. Apostrophes closed the quoted literal early; whatever followed parsed as identifier or keyword, depending on the title.",
       theFix:

@@ -53,25 +53,27 @@
   --muted-foreground: #6b7280;
   --border: rgba(0, 0, 0, 0.08);
   --input: rgba(0, 0, 0, 0.08);
-  --ring: #22d3ee;
+  --ring: #0e7490;
 
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--elevated);
   --popover-foreground: var(--foreground);
-  --primary: #22d3ee;
-  --primary-foreground: #0a0a0b;
+  --primary: #0e7490;
+  --primary-foreground: #ffffff;
   --secondary: var(--elevated);
   --secondary-foreground: var(--foreground);
   --accent: var(--elevated);
   --accent-foreground: var(--foreground);
   --destructive: #ef4444;
 
-  --accent-teal: #22d3ee;
+  /* Darker than the dark-mode values: the bright ones are under 3:1 on a light
+     background, which fails WCAG AA for the text they're used on. */
+  --accent-teal: #0e7490;
   --accent-amber: #f59e0b;
-  --status-green: #10b981;
-  --status-amber: #f59e0b;
-  --status-red: #ef4444;
+  --status-green: #047857;
+  --status-amber: #b45309;
+  --status-red: #b91c1c;
 
   --radius: 0.5rem;
 }
@@ -140,10 +142,15 @@
 
 @layer utilities {
   .text-h1 {
-    font-size: 48px;
+    font-size: 36px;
     line-height: 1.1;
     font-weight: 500;
     letter-spacing: -0.02em;
+  }
+  @media (min-width: 40rem) {
+    .text-h1 {
+      font-size: 48px;
+    }
   }
   .text-h2 {
     font-size: 32px;

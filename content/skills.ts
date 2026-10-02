@@ -25,16 +25,7 @@ export const skills: SkillBucket[] = [
   },
   {
     label: "Languages",
-    items: [
-      "Python",
-      "TypeScript/JavaScript",
-      "Java",
-      "SQL",
-      "C++",
-      "C#",
-      "Dart",
-      "NoSQL",
-    ],
+    items: ["Python", "TypeScript/JavaScript", "Java", "SQL", "C++", "C#", "Dart", "NoSQL"],
   },
   {
     label: "Backend",

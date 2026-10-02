@@ -36,14 +36,14 @@ export function Markdown({ children }: MarkdownProps) {
           </code>
         ),
         pre: ({ children: c }) => (
-          <pre className="bg-elevated text-foreground mb-4 overflow-x-auto rounded-lg border border-border p-4 font-mono text-[13px] leading-[1.55]">
+          <pre className="bg-elevated text-foreground border-border mb-4 overflow-x-auto rounded-lg border p-4 font-mono text-[13px] leading-[1.55]">
             {c}
           </pre>
         ),
         a: ({ href, children: c }) => (
           <a
             href={href}
-            className="text-accent-teal underline-offset-4 hover:underline"
+            className="text-accent-teal decoration-accent-teal/40 hover:decoration-accent-teal underline underline-offset-4"
             target={href?.startsWith("http") ? "_blank" : undefined}
             rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
           >
@@ -51,14 +51,12 @@ export function Markdown({ children }: MarkdownProps) {
           </a>
         ),
         blockquote: ({ children: c }) => (
-          <blockquote className="text-muted-foreground mb-4 border-l-2 border-border pl-4 italic">
+          <blockquote className="text-muted-foreground border-border mb-4 border-l-2 pl-4 italic">
             {c}
           </blockquote>
         ),
-        hr: () => <hr className="my-8 border-border" />,
-        strong: ({ children: c }) => (
-          <strong className="text-foreground font-medium">{c}</strong>
-        ),
+        hr: () => <hr className="border-border my-8" />,
+        strong: ({ children: c }) => <strong className="text-foreground font-medium">{c}</strong>,
       }}
     >
       {children}

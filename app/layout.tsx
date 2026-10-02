@@ -32,10 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground min-h-screen antialiased`}
-      >
+    // Font variables go on <html>: globals.css sets `html { font-family: var(--font-geist-sans) }`,
+    // and a variable declared on <body> is undefined there, so every page fell back to serif.
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="bg-background text-foreground min-h-screen antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
