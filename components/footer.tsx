@@ -4,7 +4,7 @@ import { about } from "@/content/about";
 import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
 
 const buildDate = new Date().toISOString().slice(0, 10);
-const sourceHref = about.contact.github;
+const sourceHref = "https://github.com/Jenil25/portfolio";
 
 const socials = [
   { href: about.contact.github, label: "GitHub", Icon: GitHubIcon },
