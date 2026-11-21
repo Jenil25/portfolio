@@ -19,26 +19,38 @@ in `content/*.ts`, validated against `lib/types.ts` at compile time:
 | File                    | Renders on                           |
 | ----------------------- | ------------------------------------ |
 | `content/projects.ts`   | `/`, `/projects`, `/projects/[slug]` |
-| `content/failures.ts`   | `/failures`                          |
-| `content/changelog.ts`  | career timeline on `/` and `/about`  |
-| `content/about.ts`      | `/about`, footer contact links       |
+| `content/failures.ts`   | `/`, `/failures`, `/failures/[slug]` |
+| `content/experience.ts` | `/`, `/experience`                   |
+| `content/changelog.ts`  | the timeline on `/about`             |
+| `content/about.ts`      | `/` (contact links), `/about`        |
 | `content/skills.ts`     | `/about`                             |
-| `content/experience.ts` | `/experience`                        |
 
 Two contracts to know before editing:
 
-- **`Project.slug` is a foreign key.** It drives `generateStaticParams()`, related-project
-  ranking, and graph node ids. Renaming one breaks the URL and the graph.
-- **`Project.techStack` is a closed union** (`TechName` in `lib/types.ts`). The knowledge
-  graph dedupes tech nodes by exact string match, so new tech must be added to the union
-  first — that's what stops `"NextJS"` and `"Next.js"` from becoming two nodes.
+- **Slugs are foreign keys.** `Project.slug` and `Failure.slug` each drive a static route
+  and its share image through `generateStaticParams()`, so renaming one breaks the URL.
+  Project slugs also key related-project ranking.
+- **`Project.techStack` is a closed union** (`TechName` in `lib/types.ts`). Related-project
+  ranking matches tech by exact string, so new tech must be added to the union first —
+  that's what stops `"NextJS"` and `"Next.js"` from counting as two different tools.
 
 ## Updating the resume
 
-Overwrite `public/resume.pdf`. That's the whole process — the download buttons on `/` and `/about`
+Overwrite `public/resume.pdf`. That's the whole process — the resume links on `/` and `/about`
 point at a fixed path, so the next build (or even the next request in dev) serves the new
 file. The name a visitor's download is saved under is `RESUME_FILENAME` in `lib/site.ts`,
 independent of what the file is called on disk.
+
+## Design
+
+Tokens live in `app/globals.css`: one warm hue for every neutral (OKLCH), one accent whose
+only jobs are links, focus, selection and the active nav item, and five type sizes (`meta`,
+`small`, `body`, `lead`, `display`). Every page shares one 40rem column, so the left edge
+never moves between routes.
+
+Share images (`opengraph-image.tsx`) are rendered with Satori at build time, one per project
+and failure. They fetch Inter from Google Fonts during the build, so builds need network
+access.
 
 ## Deploying
 
