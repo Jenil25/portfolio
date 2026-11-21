@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TechPill } from "@/components/tech-pill";
+import { enterAt, Page, PageHeader } from "@/components/page";
 import { experience } from "@/content/experience";
 
 export const metadata: Metadata = {
@@ -10,71 +10,59 @@ export const metadata: Metadata = {
 /** Bullets shown before the rest collapse into a native <details>. */
 const VISIBLE_BULLETS = 4;
 
+function Bullets({ items }: { items: string[] }) {
+  return (
+    <ul className="marker:text-subtle mt-4 list-disc space-y-2 pl-5">
+      {items.map((bullet) => (
+        <li key={bullet}>{bullet}</li>
+      ))}
+    </ul>
+  );
+}
+
 export default function ExperiencePage() {
   return (
-    <div className="mx-auto max-w-[900px] px-6 py-12">
-      <header className="mb-10 flex flex-col gap-2">
-        <h1 className="text-h1 text-foreground">Experience</h1>
-        <p className="text-muted-foreground text-[16px] leading-[1.55]">
-          Roles, the systems I built in them, and the stack behind each.
-        </p>
-      </header>
+    <Page>
+      <PageHeader title="Experience">
+        <p>Roles, the systems I built in them, and the stack behind each.</p>
+      </PageHeader>
 
-      <ol className="flex flex-col gap-14">
-        {experience.map((role) => {
-          const visible = role.bullets.slice(0, VISIBLE_BULLETS);
+      <ol>
+        {experience.map((role, i) => {
           const hidden = role.bullets.slice(VISIBLE_BULLETS);
-
           return (
-            <li key={`${role.company}-${role.dates}`} className="flex flex-col gap-5">
-              <div className="flex flex-col gap-1.5">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                  <h2 className="text-h3 text-foreground">{role.role}</h2>
-                  <span className="text-muted-foreground font-mono text-[13px]">{role.dates}</span>
-                </div>
-                <p className="text-muted-foreground text-[14px]">{role.company}</p>
+            <li
+              key={`${role.company}-${role.dates}`}
+              className="enter mt-16"
+              style={enterAt(Math.min(i + 1, 3))}
+            >
+              <div className="grid gap-x-8 sm:grid-cols-[1fr_auto]">
+                <h2 className="text-lead font-semibold">{role.role}</h2>
+                <p className="text-meta text-subtle font-mono sm:col-start-2 sm:row-start-1 sm:pt-1.5">
+                  {role.dates}
+                </p>
+                <p className="text-muted">{role.company}</p>
               </div>
 
-              <div className="border-border flex flex-col gap-3 border-l pl-5">
-                <p className="text-foreground text-[14px]">{role.projectName}</p>
-                <p className="text-muted-foreground text-[15px] leading-[1.6]">{role.summary}</p>
-              </div>
+              <p className="mt-5 font-medium">{role.projectName}</p>
+              <p className="text-muted mt-1">{role.summary}</p>
 
-              <ul className="text-muted-foreground flex flex-col gap-2 text-[15px] leading-[1.6]">
-                {visible.map((bullet) => (
-                  <li key={bullet} className="flex gap-3">
-                    <span className="text-accent-teal select-none">—</span>
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-
+              <Bullets items={role.bullets.slice(0, VISIBLE_BULLETS)} />
               {hidden.length > 0 && (
-                <details className="group flex flex-col gap-2">
-                  <summary className="text-muted-foreground hover:text-foreground cursor-pointer list-none text-[13px] transition-colors marker:content-none">
+                <details className="group mt-3">
+                  <summary className="text-small text-subtle hover:text-foreground w-fit cursor-pointer list-none pl-5 transition-colors marker:content-none">
                     <span className="group-open:hidden">Show {hidden.length} more</span>
                     <span className="hidden group-open:inline">Show less</span>
                   </summary>
-                  <ul className="text-muted-foreground mt-2 flex flex-col gap-2 text-[15px] leading-[1.6]">
-                    {hidden.map((bullet) => (
-                      <li key={bullet} className="flex gap-3">
-                        <span className="text-accent-teal select-none">—</span>
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <Bullets items={hidden} />
                 </details>
               )}
 
-              <div className="flex flex-wrap gap-1.5">
-                {role.techStack.map((tech) => (
-                  <TechPill key={tech} label={tech} />
-                ))}
-              </div>
+              <p className="text-small text-subtle mt-5">{role.techStack.join(", ")}</p>
             </li>
           );
         })}
       </ol>
-    </div>
+    </Page>
   );
 }

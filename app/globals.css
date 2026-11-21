@@ -1,182 +1,129 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --color-surface: var(--surface);
-  --color-elevated: var(--elevated);
+  --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
 
-  --color-accent-teal: var(--accent-teal);
-  --color-accent-amber: var(--accent-amber);
-  --color-status-green: var(--status-green);
-  --color-status-amber: var(--status-amber);
-  --color-status-red: var(--status-red);
-
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-geist-sans);
-
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 0.75rem;
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-fragment-mono);
 }
 
+/* Five type sizes, nothing in between. Tracking follows Inter's dynamic metrics for each
+   size; Inter's opsz axis switches to the Display cut on its own at the larger ones. */
+@theme {
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.5;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.55;
+  --text-small--letter-spacing: -0.006em;
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  --text-body--letter-spacing: -0.011em;
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.45;
+  --text-lead--letter-spacing: -0.017em;
+  --text-display: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.022em;
+  --text-display--font-weight: 600;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* One warm hue (75–85) for every neutral, so grays, text and hairlines never disagree.
+   The accent has one job: links, focus, selection, and the active nav item. All text
+   colors clear 4.5:1 on both background and surface, in both themes. */
 :root {
-  /* Light mode (alternate) */
-  --background: #fafaf8;
-  --surface: #ffffff;
-  --elevated: #f4f4f0;
-  --foreground: #1c1c1a;
-  --muted: #f4f4f0;
-  --muted-foreground: #6b7280;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: rgba(0, 0, 0, 0.08);
-  --ring: #0e7490;
-
-  --card: var(--surface);
-  --card-foreground: var(--foreground);
-  --popover: var(--elevated);
-  --popover-foreground: var(--foreground);
-  --primary: #0e7490;
-  --primary-foreground: #ffffff;
-  --secondary: var(--elevated);
-  --secondary-foreground: var(--foreground);
-  --accent: var(--elevated);
-  --accent-foreground: var(--foreground);
-  --destructive: #ef4444;
-
-  /* Darker than the dark-mode values: the bright ones are under 3:1 on a light
-     background, which fails WCAG AA for the text they're used on. */
-  --accent-teal: #0e7490;
-  --accent-amber: #f59e0b;
-  --status-green: #047857;
-  --status-amber: #b45309;
-  --status-red: #b91c1c;
-
-  --radius: 0.5rem;
+  --background: oklch(0.985 0.003 85);
+  --surface: oklch(0.962 0.004 85);
+  --foreground: oklch(0.22 0.006 75);
+  --muted: oklch(0.46 0.008 75);
+  --subtle: oklch(0.53 0.008 75);
+  --line: oklch(0.22 0.006 75 / 0.1);
+  --accent: oklch(0.555 0.165 42);
 }
 
 .dark {
-  /* Dark mode (primary) */
-  --background: #0a0a0b;
-  --surface: #15151a;
-  --elevated: #1c1c22;
-  --foreground: #f4f4f0;
-  --muted: #1c1c22;
-  --muted-foreground: #9ca3af;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #22d3ee;
-
-  --card: var(--surface);
-  --card-foreground: var(--foreground);
-  --popover: var(--elevated);
-  --popover-foreground: var(--foreground);
-  --primary: #22d3ee;
-  --primary-foreground: #0a0a0b;
-  --secondary: var(--elevated);
-  --secondary-foreground: var(--foreground);
-  --accent: var(--elevated);
-  --accent-foreground: var(--foreground);
-  --destructive: #ef4444;
-
-  --accent-teal: #22d3ee;
-  --accent-amber: #f59e0b;
-  --status-green: #10b981;
-  --status-amber: #f59e0b;
-  --status-red: #ef4444;
+  --background: oklch(0.165 0.004 75);
+  --surface: oklch(0.205 0.005 75);
+  --foreground: oklch(0.955 0.004 85);
+  --muted: oklch(0.74 0.008 75);
+  --subtle: oklch(0.62 0.008 75);
+  --line: oklch(0.955 0.004 85 / 0.09);
+  --accent: oklch(0.75 0.155 52);
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-line;
   }
   html {
     @apply font-sans;
-    font-feature-settings: "ss01", "cv11";
   }
   html.dark {
     color-scheme: dark;
   }
   body {
-    @apply bg-background text-foreground antialiased;
-    font-size: 16px;
-    line-height: 1.6;
+    @apply bg-background text-foreground text-body antialiased;
   }
   h1,
   h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: 500;
-    letter-spacing: -0.01em;
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li {
+    text-wrap: pretty;
+  }
+  time,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
   }
   ::selection {
-    background-color: rgba(34, 211, 238, 0.25);
-    color: var(--foreground);
+    background-color: color-mix(in oklch, var(--accent) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  [id] {
+    scroll-margin-top: 2rem;
   }
 }
 
-@layer utilities {
-  .text-h1 {
-    font-size: 36px;
-    line-height: 1.1;
-    font-weight: 500;
-    letter-spacing: -0.02em;
+/* Inline links: text keeps its color; the accent lives in the underline. */
+@utility link {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: color-mix(in oklch, var(--accent) 55%, transparent);
+  transition:
+    text-decoration-color 150ms ease,
+    color 150ms ease;
+  &:hover {
+    text-decoration-color: var(--accent);
   }
-  @media (min-width: 40rem) {
-    .text-h1 {
-      font-size: 48px;
-    }
+}
+
+/* One entrance per page: blocks rise 6px and fade in, staggered by `--i`. */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
-  .text-h2 {
-    font-size: 32px;
-    line-height: 1.15;
-    font-weight: 500;
-    letter-spacing: -0.015em;
-  }
-  .text-h3 {
-    font-size: 22px;
-    line-height: 1.3;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-  }
-  .text-body {
-    font-size: 16px;
-    line-height: 1.6;
-  }
-  .text-small {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  .text-mono-sm {
-    font-size: 13px;
-    font-family: var(--font-mono);
-    line-height: 1.5;
-  }
+}
+
+@utility enter {
+  animation: enter 600ms var(--ease-out-quint) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
 }
 
 @media (prefers-reduced-motion: reduce) {

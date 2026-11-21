@@ -8,42 +8,28 @@ export function Markdown({ children }: MarkdownProps) {
   return (
     <ReactMarkdown
       components={{
-        h2: ({ children: c }) => (
-          <h2 className="text-foreground mt-10 mb-3 text-[22px] font-medium tracking-tight first:mt-0">
-            {c}
-          </h2>
-        ),
-        h3: ({ children: c }) => (
-          <h3 className="text-foreground mt-6 mb-2 text-[18px] font-medium">{c}</h3>
-        ),
-        p: ({ children: c }) => (
-          <p className="text-foreground mb-4 text-[15px] leading-[1.7]">{c}</p>
-        ),
+        h2: ({ children: c }) => <h2 className="text-lead mt-10 mb-3 font-semibold">{c}</h2>,
+        h3: ({ children: c }) => <h3 className="mt-8 mb-2 font-semibold">{c}</h3>,
+        p: ({ children: c }) => <p className="mb-5 last:mb-0">{c}</p>,
         ul: ({ children: c }) => (
-          <ul className="text-foreground mb-4 list-disc space-y-1.5 pl-5 text-[15px] leading-[1.7]">
-            {c}
-          </ul>
+          <ul className="marker:text-subtle mb-5 list-disc space-y-1.5 pl-5">{c}</ul>
         ),
         ol: ({ children: c }) => (
-          <ol className="text-foreground mb-4 list-decimal space-y-1.5 pl-5 text-[15px] leading-[1.7]">
-            {c}
-          </ol>
+          <ol className="marker:text-subtle mb-5 list-decimal space-y-1.5 pl-5">{c}</ol>
         ),
         li: ({ children: c }) => <li>{c}</li>,
         code: ({ children: c }) => (
-          <code className="bg-elevated text-accent-teal rounded px-1 py-0.5 font-mono text-[13px]">
-            {c}
-          </code>
+          <code className="bg-surface rounded-[4px] px-1 py-px font-mono text-[0.875em]">{c}</code>
         ),
         pre: ({ children: c }) => (
-          <pre className="bg-elevated text-foreground border-border mb-4 overflow-x-auto rounded-lg border p-4 font-mono text-[13px] leading-[1.55]">
+          <pre className="bg-surface text-small mb-5 overflow-x-auto rounded-lg p-4 font-mono">
             {c}
           </pre>
         ),
         a: ({ href, children: c }) => (
           <a
             href={href}
-            className="text-accent-teal decoration-accent-teal/40 hover:decoration-accent-teal underline underline-offset-4"
+            className="link"
             target={href?.startsWith("http") ? "_blank" : undefined}
             rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
           >
@@ -51,12 +37,10 @@ export function Markdown({ children }: MarkdownProps) {
           </a>
         ),
         blockquote: ({ children: c }) => (
-          <blockquote className="text-muted-foreground border-border mb-4 border-l-2 pl-4 italic">
-            {c}
-          </blockquote>
+          <blockquote className="text-muted mb-5 border-l-2 pl-4">{c}</blockquote>
         ),
-        hr: () => <hr className="border-border my-8" />,
-        strong: ({ children: c }) => <strong className="text-foreground font-medium">{c}</strong>,
+        hr: () => <hr className="my-10" />,
+        strong: ({ children: c }) => <strong className="font-semibold">{c}</strong>,
       }}
     >
       {children}

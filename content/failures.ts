@@ -1,6 +1,7 @@
 import type { Failure } from "@/lib/types";
 
-// Dates are month precision (YYYY-MM), like the changelog. The page sorts newest first, so array order doesn't matter.
+// Dates are month precision (YYYY-MM), like the changelog. Pages read these through the helpers
+// below, which sort newest first, so array order doesn't matter.
 // TODO(jenil): dates marked "estimate" are guesses — confirm the months.
 export const failures: Failure[] = [
   {
@@ -305,3 +306,12 @@ export const failures: Failure[] = [
     },
   },
 ];
+
+/** Newest first. Same-month entries keep their array order (the sort is stable). */
+export function getFailuresByDate(): Failure[] {
+  return [...failures].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+export function getFailureBySlug(slug: string): Failure | undefined {
+  return failures.find((f) => f.slug === slug);
+}

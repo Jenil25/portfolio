@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ExternalLink } from "lucide-react";
-import { GitHubIcon } from "@/components/brand-icons";
+import { ListRow } from "@/components/list-row";
 import { Markdown } from "@/components/markdown";
-import { StatusDot } from "@/components/status-dot";
-import { TechPill } from "@/components/tech-pill";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { enterAt, Page, Section } from "@/components/page";
 import { getProjectBySlug, getRelatedProjects, projects } from "@/content/projects";
 
 interface PageProps {
@@ -32,140 +29,132 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  const related = getRelatedProjects(project.slug, 5);
+  const related = getRelatedProjects(project.slug, 3);
 
-  const overview = (
-    <>
-      {project.metrics && project.metrics.length > 0 && (
-        <div className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-3">
-          {project.metrics.map((metric) => (
-            <div
-              key={metric.label}
-              className="bg-surface border-border flex flex-col gap-1 rounded-lg border p-4"
-            >
-              <span className="text-muted-foreground font-mono text-[12px]">{metric.label}</span>
-              <span className="text-foreground text-[20px] font-medium">{metric.value}</span>
-            </div>
-          ))}
-        </div>
-      )}
-      <p className="text-foreground text-[16px] leading-[1.7]">{project.description}</p>
-    </>
-  );
-
-  // A tab exists only once its field is written; "forthcoming" placeholders read as unfinished.
-  const tabs = [
-    { value: "overview", label: "Overview", content: overview },
+  // One scrolling page instead of tabs: a skimmer never clicks a tab, so the architecture
+  // went unread. A section exists only once its field is written.
+  const sections = [
+    { id: "overview", title: "Overview", body: <p>{project.description}</p> },
     ...(project.architecture
       ? [
           {
-            value: "architecture",
-            label: "Architecture",
-            content: <Markdown>{project.architecture}</Markdown>,
+            id: "architecture",
+            title: "Architecture",
+            body: <Markdown>{project.architecture}</Markdown>,
           },
         ]
       : []),
     ...(project.story
-      ? [{ value: "story", label: "Story", content: <Markdown>{project.story}</Markdown> }]
+      ? [{ id: "story", title: "Story", body: <Markdown>{project.story}</Markdown> }]
       : []),
   ];
 
-  return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
-      <div className="mb-10 flex flex-col gap-2">
-        <Link href="/projects" className="text-muted-foreground hover:text-accent-teal text-[13px]">
-          ← All projects
-        </Link>
-      </div>
+  const links = [
+    project.github && { label: "Source", href: project.github },
+    project.demo && { label: "Live", href: project.demo },
+  ].filter((l): l is { label: string; href: string } => Boolean(l));
 
-      <header className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-        <div className="flex max-w-3xl flex-col gap-4">
-          <h1 className="text-h1 text-foreground">{project.name}</h1>
-          <p className="text-muted-foreground text-[18px] leading-[1.5]">{project.summary}</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <StatusDot status={project.status} />
-            <span className="text-muted-foreground font-mono text-[13px]">{project.date}</span>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {project.techStack.map((tech) => (
-              <TechPill key={tech} label={tech} />
+  return (
+    <Page>
+      {sections.length > 1 && (
+        <nav
+          aria-label="On this page"
+          className="absolute top-0 left-full hidden h-full w-40 pt-20 pl-4 xl:block"
+        >
+          <ul className="text-small sticky top-20 flex flex-col gap-2">
+            {sections.map((s) => (
+              <li key={s.id}>
+                <a
+                  href={`#${s.id}`}
+                  className="text-subtle hover:text-foreground transition-colors"
+                >
+                  {s.title}
+                </a>
+              </li>
             ))}
-          </div>
-        </div>
-        <div className="flex flex-shrink-0 flex-wrap gap-2">
-          {project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:border-accent-teal/50 border-border inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-[13px] transition-colors"
-            >
-              <GitHubIcon className="size-3.5" />
-              GitHub
-            </a>
+          </ul>
+        </nav>
+      )}
+
+      <header className="enter">
+        <Link
+          href="/projects"
+          className="text-small text-subtle hover:text-foreground transition-colors"
+        >
+          ← Projects
+        </Link>
+        <h1 className="text-display mt-6">{project.name}</h1>
+        <p className="text-lead text-muted mt-4">{project.summary}</p>
+        <dl className="text-small mt-8 grid grid-cols-[5rem_1fr] gap-x-4 gap-y-2">
+          <dt className="text-subtle">When</dt>
+          <dd className="font-mono">{project.date}</dd>
+          <dt className="text-subtle">Stack</dt>
+          <dd className="text-muted">{project.techStack.join(", ")}</dd>
+          {links.length > 0 && (
+            <>
+              <dt className="text-subtle">Links</dt>
+              <dd className="flex flex-wrap gap-x-4">
+                {links.map((l) => (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    {l.label} ↗
+                  </a>
+                ))}
+              </dd>
+            </>
           )}
-          {project.demo && (
-            <a
-              href={project.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-foreground bg-accent-teal hover:bg-accent-teal/90 inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-[13px] transition-colors"
-            >
-              <ExternalLink className="size-3.5" aria-hidden />
-              Live demo
-            </a>
-          )}
-        </div>
+        </dl>
       </header>
 
-      <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-[1fr_280px]">
-        {tabs.length === 1 ? (
-          <div className="min-w-0">{overview}</div>
-        ) : (
-          <Tabs defaultValue="overview" className="min-w-0">
-            <TabsList variant="line" className="border-border w-full justify-start gap-4 border-b">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className="data-active:after:bg-accent-teal data-active:text-foreground flex-none"
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {tabs.map((tab) => (
-              <TabsContent key={tab.value} value={tab.value} className="pt-8">
-                {tab.content}
-              </TabsContent>
-            ))}
-          </Tabs>
-        )}
+      {project.metrics && project.metrics.length > 0 && (
+        <dl
+          className="enter mt-12 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-3"
+          style={enterAt(1)}
+        >
+          {project.metrics.map((m) => (
+            // dt must come first in the markup; flex-col-reverse puts the number on top, and
+            // justify-end keeps it top-aligned when a neighbouring label wraps.
+            <div key={m.label} className="flex flex-col-reverse justify-end gap-1">
+              <dt className="text-small text-subtle">{m.label}</dt>
+              <dd className="text-lead font-mono">{m.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
-        <aside className="hidden md:block">
-          <div className="sticky top-20 flex flex-col gap-6">
-            {related.length > 0 && (
-              <div className="flex flex-col gap-3">
-                <h2 className="text-muted-foreground font-mono text-[11px] tracking-wide">
-                  Related projects
-                </h2>
-                <ul className="flex flex-col gap-2">
-                  {related.map((p) => (
-                    <li key={p.slug}>
-                      <Link
-                        href={`/projects/${p.slug}`}
-                        className="text-foreground hover:text-accent-teal block text-[14px] transition-colors"
-                      >
-                        {p.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </aside>
-      </div>
-    </div>
+      {sections.map((s, i) => (
+        <section
+          key={s.id}
+          aria-labelledby={s.id}
+          className="enter mt-16"
+          style={enterAt(Math.min(i + 1, 3))}
+        >
+          <h2 id={s.id} className="text-lead mb-4 font-semibold">
+            {s.title}
+          </h2>
+          {s.body}
+        </section>
+      ))}
+
+      {related.length > 0 && (
+        <Section title="Related" i={3}>
+          <ul>
+            {related.map((p) => (
+              <ListRow
+                key={p.slug}
+                href={`/projects/${p.slug}`}
+                title={p.name}
+                description={p.summary}
+              />
+            ))}
+          </ul>
+        </Section>
+      )}
+    </Page>
   );
 }

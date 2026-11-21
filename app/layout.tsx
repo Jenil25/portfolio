@@ -1,19 +1,23 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Fragment_Mono, Inter } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { SITE_URL } from "@/lib/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Google's Inter keeps the opsz axis (Display cut at large sizes) and tabular figures,
+// but strips the stylistic sets, so don't reach for ss01/cv11 here.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  axes: ["opsz"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fragmentMono = Fragment_Mono({
+  variable: "--font-fragment-mono",
   subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -26,20 +30,28 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 };
 
+export const viewport: Viewport = { themeColor: "#0f0e0c" };
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    // Font variables go on <html>: globals.css sets `html { font-family: var(--font-geist-sans) }`,
-    // and a variable declared on <body> is undefined there, so every page fell back to serif.
+    // Font variables go on <html>: the base styles set the font on `html`, and a variable
+    // declared on <body> is undefined there, so every page would fall back to serif.
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${inter.variable} ${fragmentMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-background text-foreground min-h-screen antialiased">
+      <body className="min-h-screen">
+        <a
+          href="#main"
+          className="bg-foreground text-background text-small sr-only rounded-md px-3 py-2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        >
+          Skip to content
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -48,7 +60,9 @@ export default function RootLayout({
         >
           <div className="flex min-h-screen flex-col">
             <Nav />
-            <main className="flex-1">{children}</main>
+            <main id="main" className="flex-1">
+              {children}
+            </main>
             <Footer />
           </div>
         </ThemeProvider>
