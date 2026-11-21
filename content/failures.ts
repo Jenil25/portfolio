@@ -29,16 +29,16 @@ export const failures: Failure[] = [
     severity: "major",
     category: "architecture",
     description:
-      "The resume tailoring step kept emitting the master LaTeX template with no edits. Three independent causes stacked.",
+      "The resume tailoring step kept emitting the master LaTeX template with no edits. The merge code was looking for placeholders the template no longer had.",
     postMortem: {
       whatHappened:
-        "For ~40 consecutive jobs, the tailored-resume artifact was byte-identical to the master template. The pipeline didn't fail, so it kept running.",
+        "For dozens of consecutive jobs, the tailored-resume artifact was byte-identical to the master template. The pipeline didn't fail, so it kept running.",
       rootCause:
-        "Three causes stacked. (1) The chosen model was undersized for the rewrite task. (2) The prompt was over-constrained — too many 'must keep' rules left no degrees of freedom for the model to make edits. (3) The placeholder tokens the prompt instructed the model to replace did not exist verbatim in the template, so even when the model tried, nothing matched.",
+        "The merge step, an n8n Code node, swapped tokens like `__EXPERIENCE_SECTION__` for the tailored sections. After a template change the tokens were gone, and JavaScript's `replace` returns the original string when nothing matches, so the model's output was dropped without an error. Fixing that exposed two more problems: the model was undersized for the rewrite, and the prompt's many 'must keep' rules left it little room to change anything.",
       theFix:
-        "Switched to gemini-2.5-flash, loosened the constraint set, and replaced placeholder-token matching with regex \\section{} boundary detection so the rewrite operates on real LaTeX structure.",
+        "Replaced placeholder-token matching with regex \\section{} boundary detection, so the merge operates on real LaTeX structure and throws if it can't find the sections. Then switched to gemini-2.5-flash and loosened the constraint set.",
       whatILearned:
-        "When output collapses to a no-op, suspect upstream contract drift before tuning prompts. The 'placeholder doesn't exist in the template' bug was invisible from the model's side — it would have done the right thing if asked correctly.",
+        "When output collapses to a no-op, suspect the plumbing before tuning prompts. The model's output was there all along; the merge code was quietly throwing it away.",
     },
   },
   {
@@ -66,12 +66,12 @@ export const failures: Failure[] = [
     severity: "major",
     category: "decision",
     description:
-      "Optimized for cost over quality on the resume tailoring node. The output collapsed and the cost saving was meaningless.",
+      "Optimized for cost over quality on the resume tailoring node. The rewrites weren't good enough to use, and the cost saving was meaningless.",
     postMortem: {
       whatHappened:
-        "Chose a smaller, cheaper model for the resume rewrite step on the assumption that the task was 'simple structured editing'. It wasn't — the model lacked the context window and instruction-following to handle a 600-line LaTeX template plus a job description plus the rewrite rules.",
+        "Chose a smaller, cheaper model for the resume rewrite step on the assumption that the task was 'simple structured editing'. It wasn't — the model didn't follow instructions well enough to handle a full LaTeX template plus a job description plus the rewrite rules.",
       rootCause:
-        "Cost-first thinking before validating quality. The cheaper model's per-call savings were trivial against the cost of unusable output and the time spent debugging it as if it were a prompt or template bug.",
+        "Cost-first thinking before validating quality. The cheaper model's per-call savings were trivial against the cost of weak output and the time spent working around it.",
       theFix:
         "Moved up to gemini-2.5-flash. Re-ran the whole backlog. Established a rule: validate quality at the largest reasonable model first, then downsize if metrics hold.",
       whatILearned:
