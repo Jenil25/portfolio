@@ -1,11 +1,16 @@
 /**
  * Canonical origin. Single source for `metadataBase`, the sitemap, and robots.txt.
  *
- * No domain is registered yet. Set `NEXT_PUBLIC_SITE_URL` in the deploy environment
- * before launch — otherwise the sitemap, robots.txt, and the absolute `og:image` URL
- * all point at localhost and social link previews break.
+ * No domain is registered yet, so on Vercel this falls back to the project's production
+ * domain: `VERCEL_PROJECT_PRODUCTION_URL` is the `*.vercel.app` URL until a custom domain
+ * is added, then that domain, with no code change. It has no scheme, hence the prefix.
+ * `NEXT_PUBLIC_SITE_URL` overrides both; off Vercel with neither set, it's localhost.
  */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const vercelProductionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (vercelProductionHost ? `https://${vercelProductionHost}` : "http://localhost:3000");
 
 /**
  * The resume is a plain static asset. To publish a new version, overwrite

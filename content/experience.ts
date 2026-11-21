@@ -2,13 +2,12 @@ import type { Experience } from "@/lib/types";
 
 export const experience: Experience[] = [
   {
-    // TODO(jenil): confirm official title, and that Clear Lakes is OK with these metrics being public.
-    role: "Software Engineer Co-op",
+    role: "Software Engineer Intern",
     company: "Clear Lakes Dental",
-    dates: "Jun 2026 - Present",
+    dates: "Jun 2026 - Dec 2026",
     projectName: "Voice AI agent (patient phone line)",
     summary:
-      "Inherited a live voice AI agent — the first thing patients hear when they call a clinic — and own its scaling, reliability, latency, and compliance. It runs 24/7 across three clinics at ~1,000 calls a week, handling scheduling, cancellations, insurance verification, outbound confirmation calls, and live transfer to staff during office hours.",
+      "Inherited a live voice AI agent — the first thing patients hear when they call a clinic — and own its scaling, reliability, latency, and compliance. It runs 24/7 across four clinics at ~1,400 calls a week, handling scheduling, cancellations, insurance verification, outbound confirmation calls, and live transfer to staff during office hours.",
     techStack: [
       "VAPI",
       "Nuxt 3",
@@ -21,11 +20,13 @@ export const experience: Experience[] = [
       "Weave",
     ],
     bullets: [
-      "AI resolution rate went from ~16–17% when I joined to ~30%, against a ~29% healthcare industry average (Deloitte Digital, 2026); the agent now recovers ~16.5 staff hours a week.",
-      "Cut per-turn latency by ~1s on average and up to ~2.5s worst case through provider and assistant configuration plus server-side call handling. Past ~1.2s p50, callers start talking over the agent.",
-      "Extracted the voice bot from the main AWS Amplify app onto its own AWS Fargate service with a dedicated CI/CD pipeline, turning a ~1-day coupled deploy wait into independent, on-demand deploys. Owned hosting, deploys, and configuration end to end.",
+      "Raised the agent's autonomous resolution rate from ~16% to ~40%, well above a ~29% healthcare industry average (Deloitte Digital, 2026), recovering ~26.5 staff hours a week.",
+      "Cut per-turn latency by 1–2.5s through provider configuration, server-side call handling, and prompt restructuring. Past ~1.2s p50, callers start talking over the agent.",
+      "Extracted the voice bot from the main AWS Amplify app onto its own AWS Fargate service with a dedicated CI/CD pipeline, turning a wait for the main app's nightly deploy into independent, on-demand deploys. Owned hosting, deploys, and configuration end to end.",
       "Wrote a deterministic (not model-based) PHI redaction script for call logs so they can be analyzed with non-BAA AI tooling, plus a BAA-scoped analysis endpoint that evaluates raw logs and suggests fixes, with its response redacted twice before it reaches any non-BAA assistant.",
-      "Benchmarked models for the assistant and settled on Claude Sonnet 4.6 for complex flows and Haiku 4.5 for lighter ones. GPT models reasoned well but followed strict instructions less reliably.",
+      'Added call memory: the agent offers to pick up where a caller\'s last call ended instead of starting over, and recognizes people calling back after a missed reminder call ("we left you a message earlier, are you calling about that?"), which comes up a lot given how many reminders go out.',
+      "Added outbound pre-auth calls that offer to book the appointment, and made transfers warm: the agent tells staff what it has collected, with the caller still on the line.",
+      "Benchmarked models for the assistant on instruction-following and cost, and settled on Claude Sonnet 4.6 for complex flows and Haiku 4.5 for lighter ones. GPT models reasoned well but followed strict instructions less reliably.",
       "Built Supabase cron automations: insurance verification three days before every booked appointment, and a monthly MNITS re-verification spread across five days so it never throttles the server or delays staff's manual verification requests.",
       "Extended the automated eval that reads call logs and files issues in Linear, and set up email alerts on bot failures.",
       "In progress: decomposing the prompt and moving most logic server-side to reduce hallucination, and tuning voice and persona to cut the drop-off when callers realize they're talking to an AI.",

@@ -4,14 +4,14 @@ export const changelog: ChangelogEntry[] = [
   {
     version: "v6.0",
     date: "2026-06",
-    role: "Software Engineer Co-op",
+    role: "Software Engineer Intern",
     place: "Clear Lakes Dental",
     description:
-      "Onsite co-op in Minnesota on a live voice AI agent: the first thing patients hear when they call a clinic, running 24/7 at ~1,000 calls a week. I inherited it already deployed, so the work is scaling, reliability, latency, and compliance, not the initial build.",
+      "Onsite co-op in Minnesota on a live voice AI agent: the first thing patients hear when they call a clinic, running 24/7 across four clinics at ~1,400 calls a week. I inherited it already deployed, so the work is scaling, reliability, latency, and compliance, not the initial build.",
   },
   {
     version: "v5.0",
-    date: "2026-05",
+    date: "2026-02",
     role: "Personal projects",
     place: "Boston, MA",
     description:

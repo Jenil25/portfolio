@@ -23,7 +23,7 @@ export default function HomePage() {
           </p>
           <p className="text-muted-foreground max-w-xl text-[16px] leading-[1.6]">
             On co-op at Clear Lakes Dental, I own latency, reliability, and compliance for a voice
-            AI agent that answers ~1,000 patient calls a week. Before that, two and a half years
+            AI agent that answers ~1,400 patient calls a week. Before that, two and a half years
             building RAG and LLM platforms at Jeavio. MS CS at Northeastern.{" "}
             <Link
               href="/experience"

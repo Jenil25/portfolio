@@ -5,6 +5,8 @@ export const skills: SkillBucket[] = [
     label: "AI / Data",
     items: [
       "RAG",
+      "Claude",
+      "VAPI (voice AI)",
       "LangChain",
       "LlamaIndex",
       "pgvector",
@@ -29,16 +31,16 @@ export const skills: SkillBucket[] = [
   },
   {
     label: "Backend",
-    items: ["Flask", "Django", "Spring Boot", "Node.js", "FastAPI", "Celery"],
+    items: ["Flask", "Django", "Spring Boot", "Node.js", "FastAPI", "Celery", "Supabase"],
   },
   {
     label: "Frontend",
-    items: ["React", "Next.js", "Flutter", "Stencil.js", "Ant Design"],
+    items: ["React", "Next.js", "Nuxt 3", "Vue", "Flutter", "Stencil.js", "Ant Design"],
   },
   {
     label: "Cloud & Infra",
     items: [
-      "AWS (EC2, S3, Lambda, ECS, Bedrock, Fargate, KMS, RDS, CloudFront, ECR, CodeArtifact, Parameter Store)",
+      "AWS (EC2, S3, Lambda, ECS, Bedrock, Fargate, Amplify, KMS, RDS, CloudFront, ECR, CodeArtifact, Parameter Store)",
       "GCP",
       "Docker",
       "Terraform",

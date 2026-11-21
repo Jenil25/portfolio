@@ -16,7 +16,7 @@ export default function FailuresPage() {
           Bugs, bad calls, and what they taught me. The opposite of a highlight reel.
         </p>
       </header>
-      <FailuresView failures={failures} />
+      <FailuresView failures={[...failures].sort((a, b) => b.date.localeCompare(a.date))} />
     </div>
   );
 }
