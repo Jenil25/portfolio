@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ListRow } from "@/components/list-row";
-import { enterAt, Page, PageHeader } from "@/components/page";
+import { ListRow, RowList } from "@/components/list-row";
+import { Page, PageHeader, Section } from "@/components/page";
 import { projects } from "@/content/projects";
 
 export const metadata: Metadata = {
@@ -14,17 +14,19 @@ export default function ProjectsPage() {
       <PageHeader title="Projects">
         <p>What I&apos;ve built, and how.</p>
       </PageHeader>
-      <ul className="enter mt-12" style={enterAt(1)}>
-        {projects.map((p) => (
-          <ListRow
-            key={p.slug}
-            href={`/projects/${p.slug}`}
-            title={p.name}
-            description={p.summary}
-            meta={p.date}
-          />
-        ))}
-      </ul>
+      <Section title="All projects" i={1}>
+        <RowList>
+          {projects.map((p) => (
+            <ListRow
+              key={p.slug}
+              href={`/projects/${p.slug}`}
+              title={p.name}
+              description={p.summary}
+              meta={p.date}
+            />
+          ))}
+        </RowList>
+      </Section>
     </Page>
   );
 }

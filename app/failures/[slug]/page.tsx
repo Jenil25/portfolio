@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ListRow } from "@/components/list-row";
-import { enterAt, Page, Section } from "@/components/page";
+import { ListRow, RowList } from "@/components/list-row";
+import { MEASURE, Page, PageHeader, Section } from "@/components/page";
 import { Severity } from "@/components/severity";
 import { failures, getFailureBySlug, getFailuresByDate } from "@/content/failures";
 import type { Failure, FailureCategory } from "@/lib/types";
@@ -49,43 +49,40 @@ export default async function FailurePage({ params }: PageProps) {
 
   return (
     <Page>
-      <header className="enter">
-        <Link
-          href="/failures"
-          className="text-small text-subtle hover:text-foreground transition-colors"
-        >
-          ← Failure log
-        </Link>
-        <p className="text-meta text-subtle mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono">
-          <time dateTime={failure.date}>{failure.date}</time>
-          <Severity severity={failure.severity} label />
-          <span>{CATEGORY_LABEL[failure.category]}</span>
-        </p>
-        <h1 className="text-display mt-3">{failure.title}</h1>
-        <p className="text-lead text-muted mt-4">{failure.description}</p>
-      </header>
+      <PageHeader
+        title={failure.title}
+        before={
+          <>
+            <Link
+              href="/failures"
+              className="text-small text-subtle hover:text-foreground transition-colors"
+            >
+              ← Failure log
+            </Link>
+            <p className="text-meta text-subtle mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono">
+              <time dateTime={failure.date}>{failure.date}</time>
+              <Severity severity={failure.severity} label />
+              <span>{CATEGORY_LABEL[failure.category]}</span>
+            </p>
+          </>
+        }
+      >
+        <p>{failure.description}</p>
+      </PageHeader>
 
       {SECTIONS.map(({ key, title }, i) => (
-        <section
-          key={key}
-          aria-labelledby={key}
-          className="enter mt-12"
-          style={enterAt(Math.min(i + 1, 3))}
-        >
-          <h2 id={key} className="text-lead mb-3 font-semibold">
-            {title}
-          </h2>
-          <p>{failure.postMortem[key]}</p>
-        </section>
+        <Section key={key} title={title} i={i + 1}>
+          <p className={MEASURE}>{failure.postMortem[key]}</p>
+        </Section>
       ))}
 
       {neighbours.length > 0 && (
-        <Section title="More from the log" i={3}>
-          <ul>
+        <Section title="More from the log" i={4}>
+          <RowList>
             {neighbours.map(({ label, failure: f }) => (
               <ListRow key={f.slug} href={`/failures/${f.slug}`} title={f.title} meta={label} />
             ))}
-          </ul>
+          </RowList>
         </Section>
       )}
     </Page>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ListRow } from "@/components/list-row";
-import { enterAt, Page, PageHeader, Section } from "@/components/page";
+import { ListRow, RowList } from "@/components/list-row";
+import { MEASURE, Page, PageHeader, Section } from "@/components/page";
 import { about } from "@/content/about";
 import { changelog } from "@/content/changelog";
 import { skills } from "@/content/skills";
@@ -24,11 +24,13 @@ export default function AboutPage() {
     <Page>
       <PageHeader title="About" />
 
-      <div className="enter mt-10 space-y-5" style={enterAt(1)}>
-        {about.bio.map((paragraph, idx) => (
-          <p key={idx}>{paragraph}</p>
-        ))}
-      </div>
+      <Section title="Background" i={1}>
+        <div className={`${MEASURE} space-y-5`}>
+          {about.bio.map((paragraph, idx) => (
+            <p key={idx}>{paragraph}</p>
+          ))}
+        </div>
+      </Section>
 
       <Section title="Currently exploring" i={2}>
         <ul className="marker:text-subtle text-muted list-disc space-y-1.5 pl-5">
@@ -39,7 +41,7 @@ export default function AboutPage() {
       </Section>
 
       <Section title="Timeline" i={3}>
-        <ol className="space-y-6">
+        <ol className={`${MEASURE} space-y-6`}>
           {changelog.map((entry) => (
             <li key={entry.date} className="grid gap-x-6 gap-y-1 sm:grid-cols-[5rem_1fr]">
               <time dateTime={entry.date} className="text-meta text-subtle font-mono sm:pt-0.5">
@@ -58,7 +60,7 @@ export default function AboutPage() {
       </Section>
 
       <Section title="Education" i={3}>
-        <ul>
+        <RowList>
           {about.education.map((entry) => (
             <ListRow
               key={entry.institution}
@@ -67,7 +69,7 @@ export default function AboutPage() {
               meta={entry.gradDate}
             />
           ))}
-        </ul>
+        </RowList>
       </Section>
 
       <Section title="Skills" i={3}>

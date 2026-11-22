@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { SITE_URL } from "@/lib/site";
 
@@ -11,17 +13,20 @@ const SUBTLE = "#898581";
 const ACCENT = "#f98e46";
 
 /**
- * Satori needs TTF/OTF/WOFF, not the woff2 next/font serves, so this fetches a TTF from
- * Google Fonts at build time, subset to exactly the characters on the card.
+ * Satori needs TTF/OTF/WOFF, not the woff2 next/font serves. The TTFs are checked in
+ * (lib/fonts, OFL-licensed) rather than fetched from Google at build time: with 60 cards,
+ * dropped connections to Google failed or stalled the whole build.
  */
-async function loadInter(weight: 400 | 600, text: string): Promise<ArrayBuffer> {
-  const css = await fetch(
-    `https://fonts.googleapis.com/css2?family=Inter:wght@${weight}&text=${encodeURIComponent(text)}`,
-  ).then((r) => r.text());
-  const url = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
-  if (!url) throw new Error(`Couldn't load Inter ${weight} for an OG image`);
-  return fetch(url).then((r) => r.arrayBuffer());
-}
+const fonts = Promise.all(
+  [400, 600].map((weight) =>
+    readFile(join(process.cwd(), "lib/fonts", `Inter-${weight}.ttf`)).then((data) => ({
+      name: "Inter",
+      data,
+      weight: weight as 400 | 600,
+      style: "normal" as const,
+    })),
+  ),
+);
 
 function clip(text: string, max: number) {
   return text.length <= max ? text : `${text.slice(0, max - 1).trimEnd()}…`;
@@ -42,10 +47,6 @@ export async function ogImage({ title, subtitle, label }: OgCard) {
   const name = "Jenil Mahyavanshi";
   const right = label ?? new URL(SITE_URL).host;
   const sub = subtitle ? clip(subtitle, 150) : undefined;
-  const [regular, semibold] = await Promise.all([
-    loadInter(400, `${name}${right}${sub ?? ""}`),
-    loadInter(600, title),
-  ]);
 
   return new ImageResponse(
     <div
@@ -100,10 +101,7 @@ export async function ogImage({ title, subtitle, label }: OgCard) {
     </div>,
     {
       ...OG_SIZE,
-      fonts: [
-        { name: "Inter", data: regular, weight: 400, style: "normal" },
-        { name: "Inter", data: semibold, weight: 600, style: "normal" },
-      ],
+      fonts: await fonts,
     },
   );
 }

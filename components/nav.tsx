@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { COLUMN } from "@/components/page";
+import { GUTTER } from "@/components/page";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -16,10 +16,10 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header>
+    <header className="border-b">
       <nav
         aria-label="Primary"
-        className={cn(COLUMN, "flex h-16 items-center justify-between gap-6")}
+        className={cn(GUTTER, "flex h-16 items-center justify-between gap-6")}
       >
         {/* The full name doesn't fit beside four links on a 390px phone. */}
         <Link href="/" className="text-small font-medium">

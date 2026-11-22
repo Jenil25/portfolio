@@ -45,12 +45,12 @@ independent of what the file is called on disk.
 
 Tokens live in `app/globals.css`: one warm hue for every neutral (OKLCH), one accent whose
 only jobs are links, focus, selection and the active nav item, and five type sizes (`meta`,
-`small`, `body`, `lead`, `display`). Every page shares one 40rem column, so the left edge
-never moves between routes.
+`small`, `body`, `lead`, `display`). Pages are stacks of hairline-divided rows inside a 70rem
+frame; most rows split into a label column and a content column (`components/page.tsx`).
 
 Share images (`opengraph-image.tsx`) are rendered with Satori at build time, one per project
-and failure. They fetch Inter from Google Fonts during the build, so builds need network
-access.
+and failure, using the Inter TTFs checked into `lib/fonts` (SIL Open Font License, see
+`lib/fonts/OFL.txt`).
 
 ## Deploying
 

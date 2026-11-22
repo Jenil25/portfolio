@@ -1,6 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+/** Wraps ListRows. The negative margin cancels the rows' own padding at the ends, so the first
+    title lines up with the section label beside it. */
+export function RowList({ children }: { children: ReactNode }) {
+  return <ul className="-my-3">{children}</ul>;
+}
+
 interface ListRowProps {
   title: ReactNode;
   description?: ReactNode;
@@ -22,7 +28,9 @@ export function ListRow({ title, description, meta, href }: ListRowProps) {
           {meta}
         </span>
       )}
-      {description && <span className="text-small text-muted sm:col-span-2">{description}</span>}
+      {description && (
+        <span className="text-small text-muted max-w-[42rem] sm:col-span-2">{description}</span>
+      )}
     </>
   );
   const layout = "-mx-3 grid gap-x-8 gap-y-1 rounded-lg px-3 py-3 sm:grid-cols-[1fr_auto]";

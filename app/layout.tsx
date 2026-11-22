@@ -3,6 +3,7 @@ import { Fragment_Mono, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Nav } from "@/components/nav";
+import { FRAME } from "@/components/page";
 import { Footer } from "@/components/footer";
 import { SITE_URL } from "@/lib/site";
 
@@ -58,7 +59,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col">
+          <div className={`${FRAME} flex min-h-screen flex-col`}>
             <Nav />
             <main id="main" className="flex-1">
               {children}

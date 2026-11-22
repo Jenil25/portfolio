@@ -1,4 +1,4 @@
-import { COLUMN } from "@/components/page";
+import { GUTTER } from "@/components/page";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { REPO_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -9,8 +9,10 @@ const commitSha = process.env.VERCEL_GIT_COMMIT_SHA;
 
 export function Footer() {
   return (
-    <footer className={cn(COLUMN, "pb-10")}>
-      <div className="text-meta text-subtle flex items-center justify-between gap-4 border-t pt-5">
+    <footer className="border-t">
+      <div
+        className={cn(GUTTER, "text-meta text-subtle flex items-center justify-between gap-4 py-5")}
+      >
         <p className="flex flex-wrap gap-x-4 gap-y-1">
           <span>© {buildDate.slice(0, 4)} Jenil Mahyavanshi</span>
           <a href={REPO_URL} className="hover:text-foreground transition-colors">
