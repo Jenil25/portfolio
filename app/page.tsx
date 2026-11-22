@@ -1,85 +1,133 @@
-import Link from "next/link";
-import { Download } from "lucide-react";
-import { AgentSandbox } from "@/components/agent-sandbox";
-import { GitHubIcon } from "@/components/brand-icons";
-import { CareerTimeline } from "@/components/career-timeline";
-import { ProjectCard } from "@/components/project-card";
+import { ListRow, RowList } from "@/components/list-row";
+import { GUTTER, MEASURE, Page, Section } from "@/components/page";
 import { about } from "@/content/about";
+import { experience } from "@/content/experience";
+import { getFailuresByDate } from "@/content/failures";
 import { getFeaturedProjects } from "@/content/projects";
 import { RESUME_FILENAME, RESUME_PATH } from "@/lib/site";
+import { cn } from "@/lib/utils";
+
+const contactLinks = [
+  { label: "Resume", glyph: "↓", href: RESUME_PATH, download: RESUME_FILENAME },
+  { label: "GitHub", glyph: "↗", href: about.contact.github },
+  { label: "LinkedIn", glyph: "↗", href: about.contact.linkedin },
+  { label: "Email", glyph: "→", href: `mailto:${about.contact.email}` },
+];
+
+// The voice agent's headline results, as stated in its /experience bullets. Keep in sync.
+const results = [
+  { value: "~16% → ~40%", label: "Calls the agent resolves on its own" },
+  { value: "1–2.5 s", label: "Latency cut from each turn" },
+  { value: "~26.5 h", label: "Staff time recovered every week" },
+];
 
 export default function HomePage() {
+  const now = experience[0];
   const featured = getFeaturedProjects(3);
+  const recentFailures = getFailuresByDate()
+    .filter((f) => f.severity !== "minor")
+    .slice(0, 3);
 
   return (
-    <div className="mx-auto max-w-6xl px-6">
-      <section className="grid grid-cols-1 items-center gap-12 py-16 md:grid-cols-[3fr_2fr] md:gap-10 md:py-24">
-        <div className="flex flex-col gap-6">
-          <h1 className="text-foreground text-[56px] leading-[1.05] font-medium tracking-[-0.02em] sm:text-[64px]">
-            Jenil Mahyavanshi
-          </h1>
-          <p className="text-foreground text-[22px] leading-[1.4]">
-            Software engineer building production AI systems.
-          </p>
-          <p className="text-muted-foreground max-w-xl text-[16px] leading-[1.6]">
+    <Page>
+      <section className="enter grid lg:grid-cols-[1fr_22rem]">
+        <div className={cn(GUTTER, "py-16 sm:py-24")}>
+          <h1 className="text-display">Jenil Mahyavanshi</h1>
+          <p className="text-lead mt-5">Software engineer building production AI systems.</p>
+          <p className={cn("text-muted mt-4", MEASURE)}>
             On co-op at Clear Lakes Dental, I own latency, reliability, and compliance for a voice
             AI agent that answers ~1,400 patient calls a week. Before that, two and a half years
-            building RAG and LLM platforms at Jeavio. MS CS at Northeastern.{" "}
-            <Link
-              href="/experience"
-              className="text-accent-teal decoration-accent-teal/40 hover:decoration-accent-teal underline underline-offset-4"
-            >
-              See experience →
-            </Link>
+            building RAG and LLM platforms at Jeavio. MS CS at Northeastern.
           </p>
-          <div className="flex flex-wrap gap-2">
-            <a
-              href={RESUME_PATH}
-              download={RESUME_FILENAME}
-              className="text-primary-foreground bg-accent-teal hover:bg-accent-teal/90 inline-flex items-center gap-2 rounded-md px-4 py-2 text-[14px] transition-colors"
-            >
-              <Download className="size-4" aria-hidden />
-              Download resume
-            </a>
-            <a
-              href={about.contact.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:border-accent-teal/50 border-border inline-flex items-center gap-2 rounded-md border px-4 py-2 text-[14px] transition-colors"
-            >
-              <GitHubIcon className="size-4" />
-              GitHub
-            </a>
-          </div>
+          <ul className="text-small mt-8 flex flex-wrap gap-x-6 gap-y-2">
+            {contactLinks.map(({ label, glyph, href, download }) => {
+              const external = href.startsWith("http");
+              return (
+                <li key={label}>
+                  <a
+                    href={href}
+                    download={download}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                    className="group text-muted hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    {label}
+                    <span
+                      aria-hidden
+                      className="text-subtle group-hover:text-accent transition-colors"
+                    >
+                      {glyph}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-        <div className="md:justify-self-end">
-          <AgentSandbox />
-        </div>
+
+        <aside
+          aria-labelledby="now-title"
+          className={cn(GUTTER, "border-t py-10 lg:border-t-0 lg:border-l lg:py-24")}
+        >
+          <p id="now-title" className="text-meta text-subtle flex items-center gap-2 font-mono">
+            <span aria-hidden className="bg-accent size-1.5 rounded-full" />
+            Now
+          </p>
+          <p className="mt-3 font-medium">{now.role}</p>
+          <p className="text-small text-muted">{now.company}</p>
+          <p className="text-meta text-subtle mt-1 font-mono">{now.dates}</p>
+          <dl className="mt-8 space-y-5">
+            {results.map(({ value, label }) => (
+              // dt must come first in the markup; flex-col-reverse puts the number on top.
+              <div key={label} className="flex flex-col-reverse gap-0.5">
+                <dt className="text-small text-subtle">{label}</dt>
+                <dd className="text-lead font-mono">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
       </section>
 
-      <section className="py-12">
-        <div className="mb-6 flex items-baseline justify-between gap-4">
-          <h2 className="text-h3 text-foreground">Featured projects</h2>
-          <Link
-            href="/projects"
-            className="hover:text-accent-teal text-muted-foreground text-[14px] underline-offset-4 hover:underline"
-          >
-            View all →
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {featured.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+      <Section title="Selected work" href="/projects" linkLabel="All projects" i={1}>
+        <RowList>
+          {featured.map((p) => (
+            <ListRow
+              key={p.slug}
+              href={`/projects/${p.slug}`}
+              title={p.name}
+              description={p.summary}
+              meta={p.date}
+            />
           ))}
-        </div>
-      </section>
+        </RowList>
+      </Section>
 
-      <section className="py-16">
-        <h2 className="text-h3 text-foreground mb-8">Career changelog</h2>
-        <div className="max-w-2xl">
-          <CareerTimeline />
-        </div>
-      </section>
-    </div>
+      <Section title="Experience" href="/experience" linkLabel="Details" i={2}>
+        <RowList>
+          {experience.map((role) => (
+            <ListRow
+              key={`${role.company}-${role.dates}`}
+              title={role.role}
+              description={role.company}
+              meta={role.dates}
+            />
+          ))}
+        </RowList>
+      </Section>
+
+      <Section title="From the failure log" href="/failures" linkLabel="All failures" i={3}>
+        <RowList>
+          {recentFailures.map((f) => (
+            <ListRow
+              key={f.slug}
+              href={`/failures/${f.slug}`}
+              title={f.title}
+              description={f.description}
+              meta={<time dateTime={f.date}>{f.date}</time>}
+            />
+          ))}
+        </RowList>
+      </Section>
+    </Page>
   );
 }

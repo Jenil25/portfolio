@@ -1,23 +1,32 @@
 import type { Metadata } from "next";
-import { ProjectsView } from "@/components/projects-view";
+import { ListRow, RowList } from "@/components/list-row";
+import { Page, PageHeader, Section } from "@/components/page";
 import { projects } from "@/content/projects";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "What I've built and the tech behind it.",
+  description: "What I've built, and how.",
 };
 
 export default function ProjectsPage() {
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
-      <header className="mb-8 flex flex-col gap-2">
-        <h1 className="text-h2 text-foreground">Projects</h1>
-        <p className="text-muted-foreground text-[15px]">
-          What I&apos;ve built and the tech behind it. Switch to the graph to see which tools recur
-          across projects.
-        </p>
-      </header>
-      <ProjectsView projects={projects} />
-    </div>
+    <Page>
+      <PageHeader title="Projects">
+        <p>What I&apos;ve built, and how.</p>
+      </PageHeader>
+      <Section title="All projects" i={1}>
+        <RowList>
+          {projects.map((p) => (
+            <ListRow
+              key={p.slug}
+              href={`/projects/${p.slug}`}
+              title={p.name}
+              description={p.summary}
+              meta={p.date}
+            />
+          ))}
+        </RowList>
+      </Section>
+    </Page>
   );
 }

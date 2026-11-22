@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Download, Mail, MapPin } from "lucide-react";
-import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
-import { CareerTimeline } from "@/components/career-timeline";
-import { TechPill } from "@/components/tech-pill";
+import { ListRow, RowList } from "@/components/list-row";
+import { MEASURE, Page, PageHeader, Section } from "@/components/page";
 import { about } from "@/content/about";
+import { changelog } from "@/content/changelog";
 import { skills } from "@/content/skills";
 import { RESUME_FILENAME, RESUME_PATH } from "@/lib/site";
 
@@ -13,129 +11,102 @@ export const metadata: Metadata = {
   description: "Background, what I'm currently exploring, and how to get in touch.",
 };
 
+const contact: { label: string; value: string; href?: string; download?: string }[] = [
+  { label: "Email", value: about.contact.email, href: `mailto:${about.contact.email}` },
+  { label: "GitHub", value: "Jenil25", href: about.contact.github },
+  { label: "LinkedIn", value: "jenilmahyavanshi", href: about.contact.linkedin },
+  { label: "Resume", value: RESUME_FILENAME, href: RESUME_PATH, download: RESUME_FILENAME },
+  { label: "Based in", value: about.contact.location },
+];
+
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-[1100px] px-6 py-12">
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-[3fr_2fr] md:gap-16">
-        <section className="flex flex-col gap-8">
-          <h1 className="text-h1 text-foreground">About</h1>
+    <Page>
+      <PageHeader title="About" />
 
-          <div className="flex flex-col gap-4">
-            {about.bio.map((paragraph, idx) => (
-              <p key={idx} className="text-foreground text-[16px] leading-[1.7]">
-                {paragraph}
-              </p>
-            ))}
-          </div>
+      <Section title="Background" i={1}>
+        <div className={`${MEASURE} space-y-5`}>
+          {about.bio.map((paragraph, idx) => (
+            <p key={idx}>{paragraph}</p>
+          ))}
+        </div>
+      </Section>
 
-          <div className="flex flex-col gap-3">
-            <h2 className="text-h3 text-foreground">Currently exploring</h2>
-            <ul className="flex flex-col gap-1.5">
-              {about.currentlyExploring.map((item) => (
-                <li
-                  key={item}
-                  className="text-foreground grid grid-cols-[12px_1fr] items-baseline gap-2 text-[15px]"
-                >
-                  <span className="text-accent-teal font-mono text-[12px]" aria-hidden>
-                    →
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <Section title="Currently exploring" i={2}>
+        <ul className="marker:text-subtle text-muted list-disc space-y-1.5 pl-5">
+          {about.currentlyExploring.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </Section>
 
-          <ContactRow />
+      <Section title="Timeline" i={3}>
+        <ol className={`${MEASURE} space-y-6`}>
+          {changelog.map((entry) => (
+            <li key={entry.date} className="grid gap-x-6 gap-y-1 sm:grid-cols-[5rem_1fr]">
+              <time dateTime={entry.date} className="text-meta text-subtle font-mono sm:pt-0.5">
+                {entry.date}
+              </time>
+              <div>
+                <p>
+                  <span className="font-medium">{entry.role}</span>
+                  <span className="text-muted"> · {entry.place}</span>
+                </p>
+                <p className="text-small text-muted mt-1">{entry.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Section>
 
-          <div>
-            <a
-              href={RESUME_PATH}
-              download={RESUME_FILENAME}
-              className="text-primary-foreground bg-accent-teal hover:bg-accent-teal/90 inline-flex items-center gap-2 rounded-md px-4 py-2 text-[14px] transition-colors"
-            >
-              <Download className="size-4" aria-hidden />
-              Download resume
-            </a>
-          </div>
-        </section>
+      <Section title="Education" i={3}>
+        <RowList>
+          {about.education.map((entry) => (
+            <ListRow
+              key={entry.institution}
+              title={entry.institution}
+              description={`${entry.degree} · GPA ${entry.gpa}`}
+              meta={entry.gradDate}
+            />
+          ))}
+        </RowList>
+      </Section>
 
-        <aside className="flex flex-col gap-12">
-          <section className="flex flex-col gap-6">
-            <h2 className="text-h3 text-foreground">Career changelog</h2>
-            <CareerTimeline />
-          </section>
-
-          <section className="flex flex-col gap-4">
-            <h2 className="text-h3 text-foreground">Education</h2>
-            <ul className="flex flex-col gap-4">
-              {about.education.map((entry) => (
-                <li key={entry.institution} className="flex flex-col gap-0.5">
-                  <span className="text-foreground text-[15px]">{entry.institution}</span>
-                  <span className="text-muted-foreground text-[14px]">{entry.degree}</span>
-                  <span className="text-muted-foreground font-mono text-[12px]">
-                    {entry.gradDate} · GPA {entry.gpa}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="flex flex-col gap-4">
-            <h2 className="text-h3 text-foreground">Skills</h2>
-            <div className="flex flex-col gap-4">
-              {skills.map((bucket) => (
-                <div key={bucket.label} className="flex flex-col gap-2">
-                  <h3 className="text-muted-foreground font-mono text-[11px] tracking-wide">
-                    {bucket.label}
-                  </h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {bucket.items.map((item) => (
-                      <TechPill key={item} label={item} />
-                    ))}
-                  </div>
-                </div>
-              ))}
+      <Section title="Skills" i={3}>
+        <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-[9rem_1fr]">
+          {skills.map((bucket) => (
+            <div key={bucket.label} className="contents">
+              <dt className="text-small text-subtle sm:pt-0.5">{bucket.label}</dt>
+              <dd className="text-muted mb-2 sm:mb-0">{bucket.items.join(", ")}</dd>
             </div>
-          </section>
-        </aside>
-      </div>
-    </div>
-  );
-}
+          ))}
+        </dl>
+      </Section>
 
-function ContactRow() {
-  const items = [
-    {
-      label: "email",
-      href: `mailto:${about.contact.email}`,
-      Icon: Mail,
-      external: false,
-    },
-    { label: "GitHub", href: about.contact.github, Icon: GitHubIcon, external: true },
-    { label: "LinkedIn", href: about.contact.linkedin, Icon: LinkedInIcon, external: true },
-  ];
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="text-muted-foreground flex items-center gap-2 text-[13px]">
-        <MapPin className="size-3.5" aria-hidden />
-        <span>{about.contact.location}</span>
-      </div>
-      <ul className="flex flex-wrap gap-2">
-        {items.map(({ label, href, Icon, external }) => (
-          <li key={label}>
-            <Link
-              href={href}
-              target={external ? "_blank" : undefined}
-              rel={external ? "noopener noreferrer" : undefined}
-              className="text-foreground hover:border-accent-teal/50 hover:text-accent-teal border-border inline-flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-[13px] transition-colors"
-            >
-              <Icon className="size-3.5" aria-hidden />
-              {label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Section title="Contact" i={3}>
+        <dl className="grid grid-cols-[5rem_1fr] gap-x-6 gap-y-2">
+          {contact.map(({ label, value, href, download }) => (
+            <div key={label} className="contents">
+              <dt className="text-small text-subtle pt-0.5">{label}</dt>
+              <dd className={href ? undefined : "text-muted"}>
+                {href ? (
+                  <a
+                    href={href}
+                    download={download}
+                    className="link"
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  >
+                    {value}
+                  </a>
+                ) : (
+                  value
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+    </Page>
   );
 }

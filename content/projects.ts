@@ -4,8 +4,6 @@ export const projects: Project[] = [
   {
     slug: "internship-hunt-pipeline",
     name: "Internship Hunt: AI-powered job application pipeline",
-    category: "ai-ml",
-    status: "shipped",
     featured: true,
     summary:
       "End-to-end pipeline that parses jobs, scores fit with Gemini, and generates ATS-optimized tailored resumes via LaTeX, surfaced through a Next.js dashboard.",
@@ -35,8 +33,6 @@ export const projects: Project[] = [
   {
     slug: "adapt-rag",
     name: "Adapt — LLM-powered knowledge platform",
-    category: "ai-ml",
-    status: "shipped",
     featured: true,
     summary:
       "Scalable microservices platform for multi-format ingestion, hybrid-search RAG, and a reusable design system — the company's core product.",
@@ -73,8 +69,6 @@ export const projects: Project[] = [
   {
     slug: "recruitease",
     name: "RecruitEase — AI recruitment platform",
-    category: "ai-ml",
-    status: "shipped",
     featured: false,
     summary:
       "A six-feature AI recruitment tool using GPT-3.5 for candidate matching, outreach, culture fit, and resume feedback.",
@@ -86,8 +80,6 @@ export const projects: Project[] = [
   {
     slug: "eeo-autofill",
     name: "EEO AutoFill — Chrome extension",
-    category: "tools",
-    status: "shipped",
     featured: true,
     summary:
       "Chrome extension (Manifest V3) that auto-fills EEO and demographic sections across Workday, Greenhouse, Lever, iCIMS, and Taleo.",
@@ -101,8 +93,6 @@ export const projects: Project[] = [
   {
     slug: "hackathon-ai-talent-pool",
     name: "Hackathon: AI talent pool",
-    category: "ai-ml",
-    status: "shipped",
     featured: false,
     summary:
       "Led a team of 5 to build an LLM-powered talent assignment tool using semantic search over employee skills.",
@@ -114,8 +104,6 @@ export const projects: Project[] = [
   {
     slug: "hackathon-llm-data-extraction",
     name: "Hackathon: LLM data extraction",
-    category: "ai-ml",
-    status: "shipped",
     featured: false,
     summary:
       "Tackled passing structured database rows to LLMs by converting rows to natural-language sentences with column context.",
@@ -127,8 +115,6 @@ export const projects: Project[] = [
   {
     slug: "the-enigma-engine",
     name: "The Enigma Engine",
-    category: "backend",
-    status: "shipped",
     featured: false,
     summary:
       "Modular RESTful API for high-integrity transaction processing with atomic operations and real-time analytics.",
@@ -141,8 +127,6 @@ export const projects: Project[] = [
   {
     slug: "shopera",
     name: "ShopEra",
-    category: "tools",
-    status: "shipped",
     featured: false,
     summary:
       "Flutter app connecting local shop owners and customers, with shop discovery, search, cart, and direct contact.",
@@ -150,7 +134,7 @@ export const projects: Project[] = [
       "A Flutter mobile app connecting local shop owners to nearby customers. Shop owners sign up through a portal, list their inventory, and manage product details; customers sign up on the consumer side and browse local shops, search by shop or by item, contact owners directly, maintain a cart, and bookmark favorites. The backend is a Firebase + MySQL/PHP split — Firebase handles auth and real-time pieces, the relational store handles product and order data.",
     techStack: ["Flutter", "Firebase", "MySQL", "PHP"],
     github: "https://github.com/Jenil25/ShopEra",
-    date: "Jun 2022 - Aug 2022",
+    date: "Jun 2022 – Aug 2022",
   },
 ];
 

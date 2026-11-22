@@ -4,7 +4,7 @@ export const experience: Experience[] = [
   {
     role: "Software Engineer Intern",
     company: "Clear Lakes Dental",
-    dates: "Jun 2026 - Dec 2026",
+    dates: "Jun 2026 – Dec 2026",
     projectName: "Voice AI agent (patient phone line)",
     summary:
       "Inherited a live voice AI agent — the first thing patients hear when they call a clinic — and own its scaling, reliability, latency, and compliance. It runs 24/7 across four clinics at ~1,400 calls a week, handling scheduling, cancellations, insurance verification, outbound confirmation calls, and live transfer to staff during office hours.",
@@ -35,7 +35,7 @@ export const experience: Experience[] = [
   {
     role: "Software Engineer",
     company: "Jeavio India Pvt. Ltd.",
-    dates: "Jun 2024 - Jul 2025",
+    dates: "Jun 2024 – Jul 2025",
     projectName: "Adapt (LLM-Powered Knowledge Platform)",
     summary:
       "Engineered a scalable microservices platform for multi-format document ingestion, RAG-based Q&A, and a reusable Design System — serving as the core product for the company.",
@@ -87,7 +87,7 @@ export const experience: Experience[] = [
   {
     role: "Associate Software Engineer",
     company: "Jeavio India Pvt. Ltd.",
-    dates: "May 2023 - May 2024",
+    dates: "May 2023 – May 2024",
     projectName: "Vito & Medwriter",
     summary:
       "Deployed OpenAI's Whisper model on GCP for medical transcription with production-grade error handling, video search, and payment integration.",
@@ -106,7 +106,7 @@ export const experience: Experience[] = [
   {
     role: "Software Engineer Intern",
     company: "Jeavio India Pvt. Ltd.",
-    dates: "Dec 2022 - Apr 2023",
+    dates: "Dec 2022 – Apr 2023",
     projectName: "Internal Tools (Skillopedia & CMA DocShare)",
     summary:
       "Developed full-stack internal tools for HR talent tracking and secure document management with granular sharing permissions.",

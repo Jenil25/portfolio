@@ -1,11 +1,8 @@
-export type ProjectStatus = "shipped" | "in-progress" | "archived";
-export type ProjectCategory = "ai-ml" | "backend" | "tools";
-
 /**
- * Closed vocabulary for `Project.techStack`. `buildGraphData` dedupes tech nodes
- * by exact string match, so a spelling variant ("NextJS" vs "Next.js") would
- * silently fork one node into two. Adding a project with new tech means adding
- * it here first — that friction is the point.
+ * Closed vocabulary for `Project.techStack`. Related-project ranking matches tech by
+ * exact string, so a spelling variant ("NextJS" vs "Next.js") would silently stop two
+ * projects from counting as related. Adding a project with new tech means adding it
+ * here first — that friction is the point.
  */
 export type TechName =
   | "AWS S3"
@@ -56,8 +53,6 @@ export interface ProjectMetric {
 export interface Project {
   slug: string;
   name: string;
-  category: ProjectCategory;
-  status: ProjectStatus;
   summary: string;
   description: string;
   techStack: TechName[];
@@ -91,7 +86,6 @@ export interface Failure {
 }
 
 export interface ChangelogEntry {
-  version: string;
   date: string;
   role: string;
   place: string;

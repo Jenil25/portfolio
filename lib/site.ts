@@ -12,6 +12,8 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (vercelProductionHost ? `https://${vercelProductionHost}` : "http://localhost:3000");
 
+export const REPO_URL = "https://github.com/Jenil25/portfolio";
+
 /**
  * The resume is a plain static asset. To publish a new version, overwrite
  * `public/resume.pdf` — the URL is stable, so nothing else needs to change and the

@@ -1,47 +1,35 @@
-import Link from "next/link";
-import { Mail } from "lucide-react";
-import { about } from "@/content/about";
-import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
+import { GUTTER } from "@/components/page";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { REPO_URL } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 const buildDate = new Date().toISOString().slice(0, 10);
-const sourceHref = "https://github.com/Jenil25/portfolio";
-
-const socials = [
-  { href: about.contact.github, label: "GitHub", Icon: GitHubIcon },
-  { href: about.contact.linkedin, label: "LinkedIn", Icon: LinkedInIcon },
-  { href: `mailto:${about.contact.email}`, label: "Email", Icon: Mail },
-];
+// Set by Vercel at build time; undefined locally, where there's no deployed commit to link.
+const commitSha = process.env.VERCEL_GIT_COMMIT_SHA;
 
 export function Footer() {
   return (
-    <footer className="border-border border-t">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-end md:justify-between">
-        <p className="text-muted-foreground max-w-xl text-sm italic">
-          no CMS — every word here is a typed constant in a git repo. v1, built {buildDate}.{" "}
-          <Link
-            href={sourceHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-accent-teal underline underline-offset-4"
-          >
-            View source →
-          </Link>
+    <footer className="border-t">
+      <div
+        className={cn(GUTTER, "text-meta text-subtle flex items-center justify-between gap-4 py-5")}
+      >
+        <p className="flex flex-wrap gap-x-4 gap-y-1">
+          <span>© {buildDate.slice(0, 4)} Jenil Mahyavanshi</span>
+          <a href={REPO_URL} className="hover:text-foreground transition-colors">
+            Source
+          </a>
+          {commitSha ? (
+            <a
+              href={`${REPO_URL}/commit/${commitSha}`}
+              className="hover:text-foreground font-mono transition-colors"
+            >
+              Built {buildDate} from {commitSha.slice(0, 7)}
+            </a>
+          ) : (
+            <span className="font-mono">Built {buildDate}</span>
+          )}
         </p>
-        <ul className="flex items-center gap-4">
-          {socials.map(({ href, label, Icon }) => (
-            <li key={label}>
-              <Link
-                href={href}
-                target={href.startsWith("mailto:") ? undefined : "_blank"}
-                rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-                aria-label={label}
-                className="text-muted-foreground hover:text-accent-teal border-border inline-flex size-8 items-center justify-center rounded-md border transition-colors"
-              >
-                <Icon className="size-4" aria-hidden />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <ThemeToggle />
       </div>
     </footer>
   );
